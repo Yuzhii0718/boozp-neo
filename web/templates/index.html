@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Boss岗位分析可视化</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="icon" href="{{ url_for('static', filename = 'img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/mystyle.css') }}">
+    <script src="{{ url_for('static', filename = 'js/jquery-1.8.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'highcharts/highcharts.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'highcharts/highcharts-more.js') }}"></script>
+    <!-- <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script> -->
+    <script src="{{ url_for('static', filename = 'highcharts/oldie.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'highcharts/wordcloud.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'highcharts/dark-unica.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/word.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/packgebubble.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/province.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/pie.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/sub_category.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/cylindrical.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/fan.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/order.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/fieldorder.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/fullscreen.js') }}"></script>
+
+</head>
+<body>
+<div class="index">
+    <div class="title">
+        <p>Boss直聘岗位分析可视化</p>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    <div class="paint_area">
+        <div class="data_frame_inline">
+            <div class="data_frame_single" id="tab1">
+                <div id="pie"></div>
+            </div>
+            <div class="data_frame_single" id="tab3">
+                <div id="fan"><p class="chart-title">学历占比</p></div>
+            </div>
+
+        </div>
+
+        <div class="">
+            <div class="data_frame_single" id="tab4">
+                <div id="cylindrical"></div>
+            </div>
+            <div class="data_frame_single" id="tab5">
+                <div id="word_cloud"></div>
+            </div>
+        </div>
+        <div class="data_frame_inline">
+            <div class="data_frame_single" id="tab6">
+                <div id="order">
+                    <p class="chart-title">企业招聘Top 10</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>公司名称</th>
+                            <th>岗位数量</th>
+                        </tr>
+                        </thead>
+                        <tbody id="J_TbData"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="data_frame_single" id="tab9">
+                <div id="province"></div>
+            </div>
+            <div class="data_frame_single" id="tab2">
+                <div id="packedbubble"></div>
+            </div>
+        </div>
+        <div class="data_frame_inline">
+            <div class="data_frame_single" id="tab8">
+                <div id="sub_category"></div>
+            </div>
+            <div class="data_frame_single" id="tab7">
+                <div id="fieldorder">
+                    <p class="chart-title">领域Top</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>领域</th>
+                            <th>岗位数量</th>
+                        </tr>
+                        </thead>
+                        <tbody id="J_TbData_field"></tbody>
+                    </table>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
