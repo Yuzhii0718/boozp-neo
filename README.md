@@ -10,9 +10,16 @@
 
     ```bash
     python -m venv .venv
-    .\.venv\Scripts\activate
+    .\.venv\Scripts\activate # 取决于你的操作系统
     pip install -r requirements.txt
     ```
+
+    本人使用的环境：
+
+    | 软件 | 版本 |
+    | --- | --- |
+    | python | 3.9.13 |
+    | mysql | 8.3 |
 
 2. 创建数据库和表
 
@@ -48,21 +55,21 @@
 - selenium script
 
     ```bash
-    python boss_selenium.py
+    python ./boss_selenium.py
     ```
 
 - clean data
 
-    你需要先将爬取的数据导出到 csv 文件，放在同一个目录下（`cleane`目录），然后运行
+    你需要先将爬取的数据导出到 csv 文件（`job_info.csv`），放在同一个目录下（`clean`目录），然后运行
 
     ```bash
-    python clean/cleandata.py
+    python ./clean/cleandata.py
     ```
 
 - web-page
 
     ```bash
-    python web/runweb.py
+    python ./web/runweb.py
     ```
 
 ## 参考代码
