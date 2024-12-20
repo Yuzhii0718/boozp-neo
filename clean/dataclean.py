@@ -17,9 +17,17 @@
 import pandas as pd
 from sqlalchemy import create_engine
 import logging
+import os
+
+
+# 如果不存在 input_data, output_data 文件夹，则创建
+if not os.path.exists('input_data'):
+    os.makedirs('input_data')
+if not os.path.exists('output_data'):
+    os.makedirs('output_data')
 
 # 读取 招聘数据.csv 文件
-all_city_zp_df = pd.read_csv('./job_info.csv', encoding='utf8', header=None,
+all_city_zp_df = pd.read_csv('input_data/job_info.csv', encoding='utf8', header=None,
                              names=["category", "sub_category", "job_title", "province", "job_location", "job_company",
                                     "job_industry", "job_finance", "job_scale", "job_welfare", "job_salary_range",
                                     "job_experience", "job_education", "job_skills", "create_time"])
@@ -90,6 +98,6 @@ logging.info("Write to MySQL Successfully!")
 print("Write to MySQL Successfully!")
 
 # 导出为 csv 文件
-clean_all_city_zp_df.to_csv('clean_job_info.csv', index=False, encoding='utf8')
+clean_all_city_zp_df.to_csv('output_data/clean_job_info.csv', index=False, encoding='utf8')
 logging.info("Write to CSV Successfully!")
 print("Write to CSV Successfully!")

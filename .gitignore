@@ -153,3 +153,7 @@ cython_debug/
 
 # spider csv
 *.csv
+
+# data folder
+output_data/
+input_data/

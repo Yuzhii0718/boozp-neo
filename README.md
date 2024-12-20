@@ -1,8 +1,8 @@
 # boss-selenium and web-page
 
-使用 python+selenium 完成对 boss 互联网相关岗位的数据爬取
+使用 python+selenium 完成对 boss 互联网相关岗位的数据爬取以及数据清洗，
 
-并分析数据，生成词云图，显示于 web 页面
+并分析数据，生成图表仪表盘，显示于 web 页面。
 
 ## Usage
 
@@ -10,7 +10,7 @@
 
     ```bash
     python -m venv .venv
-    .\.venv\Scripts\activate # 取决于你的操作系统
+    .\.venv\Scripts\activate # Depends on your OS
     pip install -r requirements.txt
     ```
 
@@ -52,27 +52,14 @@
 
 3. 运行
 
-- selenium script
-
     ```bash
-    python ./boss_selenium.py
+    python main.py
     ```
 
-- clean data
+    > 你需要先将爬取的数据导出到 csv 文件（`job_info.csv`），放在 `input_data` 然后运行数据清洗。
+    > 清洗的数据会存入数据库，以及导出到 `output_data` 目录下的 `clean_job_info.csv`。
 
-    你需要先将爬取的数据导出到 csv 文件（`job_info.csv`），放在同一个目录下（`clean`目录），然后运行
-
-    ```bash
-    python ./clean/cleandata.py
-    ```
-
-- web-page
-
-    ```bash
-    python ./web/runweb.py
-    ```
-
-## 参考代码
+## Reference
 
 - [bosszp](https://github.com/jhcoco/bosszp)
 - [boss_selenium](https://github.com/jhcoco/bosszp-selenium)
