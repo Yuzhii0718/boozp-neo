@@ -6,7 +6,7 @@
 
 ## Usage
 
-1. 环境准备
+1. Environment
 
     ```bash
     python -m venv .venv
@@ -21,7 +21,7 @@
     | python | 3.9.13 |
     | mysql | 8.3 |
 
-2. 创建数据库和表
+2. Create Database
 
     数据库名、表名可以自行修改，参考 [config](#config)
 
@@ -52,7 +52,7 @@
     );
     ```
 
-3. 运行
+3. Run
 
     ```bash
     python main.py

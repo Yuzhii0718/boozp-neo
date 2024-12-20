@@ -13,6 +13,7 @@ import re
 
 from tools.get_config import get_normal
 from tools.get_config import get_db_config
+from tools.dbutils import DBUtils
 
 JSON_PATH = 'config.json'
 normal = get_normal(JSON_PATH)
@@ -86,10 +87,12 @@ def convert_salary(salary):
             return lower, upper
     return None, None
 
+
 all_city_zp_salary_df = all_city_zp_df['job_salary_range'].apply(convert_salary)
 all_city_zp_df['salary_lower'] = all_city_zp_salary_df.apply(lambda x: x[0])
 all_city_zp_df['salary_high'] = all_city_zp_salary_df.apply(lambda x: x[1])
 all_city_zp_df.head()
+
 
 # 对`薪资`字段进行预处理。要求：30-60K·15薪 --> 最低：30，最高：60
 # all_city_zp_salary_df = all_city_zp_df['job_salary_range'].str.split('K', expand=True)[0].str.split('-', expand=True)
@@ -104,7 +107,9 @@ def fun_com_finance(x):
     else:
         return x
 
+
 all_city_zp_df['job_finance'] = all_city_zp_df['job_finance'].apply(lambda x: fun_com_finance(x))
+
 
 # 对`工作经验`字段进行预处理。要求：经验不限/在校/应届 ：0，1-3年：1，3-5年：2，5-10年：3，10年以上:4
 def fun_work_year(x):
@@ -158,9 +163,37 @@ clean_all_city_zp_df.drop(axis=0,
 
 try:
     # 将处理后的数据保存到 MySQL 数据库
-    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,db_charset)
+    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
+                                                                  db_charset)
     engine = create_engine(sql_path)
     clean_all_city_zp_df.to_sql(db_ctable, con=engine, if_exists='replace')
+
+    comments = {
+        'category': '岗位类别',
+        'sub_category': '岗位子类',
+        'job_title': '岗位名称',
+        'province': '省份',
+        'city': '城市',
+        'district': '区',
+        'street': '街道',
+        'job_company': '公司名称',
+        'job_industry': '行业类型',
+        'job_finance': '融资情况',
+        'job_scale': '企业规模',
+        'job_welfare': '企业福利',
+        'job_experience': '工作经验',
+        'job_education': '学历要求',
+        'job_skills': '技能要求',
+        'salary_lower': '最低薪资',
+        'salary_high': '最高薪资',
+        'get_time': '采集日期'
+    }
+
+    db = DBUtils()
+    for column, comment in comments.items():
+        db.modify_comment(db_ctable, column, comment)
+    db.close()
+
     logging.info("Write to MySQL Successfully!")
     print("Write to MySQL Successfully!")
 except Exception as e:

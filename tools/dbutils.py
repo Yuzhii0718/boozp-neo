@@ -95,6 +95,18 @@ class DBUtils(object):
         self.conn.commit()
         return self.cursor.rowcount
 
+    def modify_comment(self, table_name, column_name, comment):
+        """
+        修改字段注释
+        :param table_name: 表名
+        :param column_name: 字段名
+        :param comment: 注释
+        :return: None
+        """
+        sql = "ALTER TABLE {} MODIFY {} VARCHAR(255) COMMENT '{}'".format(table_name, column_name, comment)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
     def close(self):
         """
         关闭数据库连接
