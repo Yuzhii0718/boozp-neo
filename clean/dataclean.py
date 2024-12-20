@@ -10,11 +10,22 @@ from sqlalchemy import create_engine
 import logging
 import os
 import re
+
 from tools.get_config import get_normal
+from tools.get_config import get_db_config
 
 JSON_PATH = 'config.json'
 normal = get_normal(JSON_PATH)
 normal_time = normal['get_time']
+db_info = get_db_config(JSON_PATH)
+db_user = db_info['user']
+db_password = db_info['password']
+db_name = db_info['db_name']
+db_host = db_info['host']
+db_port = db_info['port']
+db_charset = db_info['charset']
+db_otable = db_info['original_table']
+db_ctable = db_info['cleaned_table']
 
 # 如果不存在 input_data, output_data 文件夹，则创建
 if not os.path.exists('input_data'):
@@ -22,8 +33,10 @@ if not os.path.exists('input_data'):
 if not os.path.exists('output_data'):
     os.makedirs('output_data')
 
+in_csv_path = 'input_data/{}.csv'.format(db_otable)
+
 # 读取 招聘数据.csv 文件
-all_city_zp_df = pd.read_csv('input_data/job_info.csv', encoding='utf8', header=None,
+all_city_zp_df = pd.read_csv(in_csv_path, encoding=db_charset, header=None,
                              names=["category", "sub_category", "job_title", "province", "job_location", "job_company",
                                     "job_industry", "job_finance", "job_scale", "job_welfare", "job_salary_range",
                                     "job_experience", "job_education", "job_skills", "create_time"])
@@ -37,7 +50,7 @@ all_city_zp_area_df = all_city_zp_area_df.rename(columns={0: "city", 1: "distric
 all_city_zp_area_df['community'] = all_city_zp_area_df['community'].fillna('')
 
 
-# 对“月薪”进行处理，如果是 25000-45000元/月 这种格式的数据 /1000 --> 最低 25 最高 45
+# 对“月薪”进行处理，如果是 10000-20000元/月 --> 最低 10000元/月 最高 20000元/月
 # 对“时薪”进行处理，如果是 100-200元/时 --> 最低 100元/时 最高 200元/时
 # 对“日薪”进行处理，如果是 100-200元/天 --> 最低 100元/天 最高 200元/天
 # 对`薪资`字段进行预处理。要求：30-60K·15薪 --> 最低：30，最高：60 去掉 K 以及后面的15薪去掉
@@ -86,6 +99,8 @@ all_city_zp_df.head()
 def fun_com_finance(x):
     if re.match(r'^\d+-\d+人$', x):
         return "未融资"
+    elif re.match(r'^\d+人以上$', x):
+        return "不需要融资"
     else:
         return x
 
@@ -141,13 +156,19 @@ clean_all_city_zp_df.drop(axis=0,
                           index=clean_all_city_zp_df.loc[(clean_all_city_zp_df['job_welfare'] == 'None')].index,
                           inplace=True)
 
-# 将处理后的数据保存到 MySQL 数据库
-engine = create_engine('mysql+pymysql://root:123456@localhost:3306/spider_db?charset=utf8')
-clean_all_city_zp_df.to_sql('t_boss_zp_info', con=engine, if_exists='replace')
-logging.info("Write to MySQL Successfully!")
-print("Write to MySQL Successfully!")
+try:
+    # 将处理后的数据保存到 MySQL 数据库
+    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,db_charset)
+    engine = create_engine(sql_path)
+    clean_all_city_zp_df.to_sql(db_ctable, con=engine, if_exists='replace')
+    logging.info("Write to MySQL Successfully!")
+    print("Write to MySQL Successfully!")
+except Exception as e:
+    logging.error("Failed to write to MySQL: {}".format(e))
+    print("Failed to write to MySQL: {}".format(e))
 
 # 导出为 csv 文件
-clean_all_city_zp_df.to_csv('output_data/clean_job_info.csv', index=False, encoding='utf8')
+out_csv_path = 'output_data/clean_{}.csv'.format(db_otable)
+clean_all_city_zp_df.to_csv(out_csv_path, index=False, encoding=db_charset)
 logging.info("Write to CSV Successfully!")
 print("Write to CSV Successfully!")

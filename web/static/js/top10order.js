@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getorder',
+        url: '/get_order',
         type: 'GET',
         datatype: 'json',
         success: function (data) {
@@ -16,9 +16,9 @@ $(document).ready(function () {
                     //动态创建一个tr行标签,并且转换成jQuery对象
                     var $trTemp = $("<tr></tr>");
                     //往行里面追加 td单元格
-                    $trTemp.append("<td class='order'>" + obj.data[i].id + "</td>");
-                    $trTemp.append("<td class='order'>" + obj.data[i].name + "</td>");
-                    $trTemp.append("<td class='order'>" + obj.data[i].num + "</td>");
+                    $trTemp.append("<td class='top10order'>" + obj.data[i].id + "</td>");
+                    $trTemp.append("<td class='top10order'>" + obj.data[i].name + "</td>");
+                    $trTemp.append("<td class='top10order'>" + obj.data[i].num + "</td>");
                     // $("#J_TbData").append($trTemp);
                     $trTemp.appendTo("#J_TbData");
                 }

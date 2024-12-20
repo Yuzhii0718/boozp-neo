@@ -10,18 +10,23 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+
 from tools.dbutils import DBUtils
 from tools.get_config import get_db_config
 from tools.get_config import get_browser
+from tools.get_config import get_spider
 
 JSON_PATH = 'config.json'
 db_info = get_db_config(JSON_PATH)
-db_user = db_info['user']
-db_password = db_info['password']
-db_name = db_info['db_name']
+db_table = db_info['original_table']
 
 browsers = get_browser(JSON_PATH)
 browser_type = browsers['browser_type']
+
+spider = get_spider(JSON_PATH)
+start_page = spider['start_page']
+end_page = spider['end_page']
+crawl_url = spider['url']
 
 print("browser_type:", browser_type)
 
@@ -34,7 +39,7 @@ elif browser_type == 'Firefox':
 else:
     raise ValueError(f"Unsupported browser type: {browser_type}")
 
-index_url = 'https://www.zhipin.com/?city=100010000&ka=city-sites-100010000'
+index_url = crawl_url
 today = datetime.date.today().strftime('%Y-%m-%d')
 city_map = {
     "北京": ["北京"],
@@ -119,7 +124,9 @@ time.sleep(1)
 init_browser()
 click_show()
 
-for i in range(1, 85):
+for i in range(start_page, end_page):
+    category_label = \
+    browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i]
     current_a = browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
         i]
     current_category = current_a.find_element(by=By.XPATH, value='../../h4').text
@@ -128,13 +135,11 @@ for i in range(1, 85):
     print("正在抓取第{}个分类".format(i))
     print("{}正在抓取{}--{}".format(today, current_category, sub_category))
     try:
-        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
-            i].click()
+        category_label.click()
     except:
         time.sleep(2)
         retry_web()
-        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
-            i].click()
+        category_label.click()
     # 模拟滑动页面
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(10)
@@ -145,7 +150,7 @@ for i in range(1, 85):
                                        value='//*[@id="wrap"]/div[2]/div[2]/div/div[1]/div[2]/ul/li')
     for job in job_detail:
         # 获取数据库连接
-        db = DBUtils('localhost', db_user, db_password, db_name)
+        db = DBUtils()
         # 岗位名称
         try:
             job_title = job.find_element(by=By.XPATH, value="./div[1]/a/div[1]/span[1]").text.strip()
@@ -190,8 +195,10 @@ for i in range(1, 85):
         print(current_category, sub_category, job_title, province, job_location, job_company, job_industry, job_finance,
               job_scale, job_welfare, job_salary_range, job_experience, job_education, job_skills)
         # 保存到 MySQL 数据库
+        savesql = "INSERT INTO {} (category, sub_category, job_title, province, job_location, job_company, job_industry, job_finance, job_scale, job_welfare, job_salary_range, job_experience, job_education, job_skills, create_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)".format(
+            db_table)
         db.insert_data(
-            "insert into job_info(category, sub_category,job_title,province,job_location,job_company,job_industry,job_finance,job_scale,job_welfare,job_salary_range,job_experience,job_education,job_skills,create_time) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            savesql,
             args=(
                 current_category, sub_category, job_title, province, job_location, job_company, job_industry,
                 job_finance,

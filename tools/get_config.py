@@ -7,23 +7,28 @@
 
 import json
 
-def get_normal(file_path):
+
+def get_config(file_path, section):
     with open(file_path, 'r') as file:
         config = json.load(file)
-        normal = config.get('normal', {})
-    return normal
+        return config.get(section, {})
+
+
+def get_normal(file_path):
+    return get_config(file_path, 'normal')
+
 
 def get_db_config(file_path):
-    with open(file_path, 'r') as file:
-        config = json.load(file)
-        db_config = config.get('database', {})
-    return db_config
+    return get_config(file_path, 'database')
+
 
 def get_browser(file_path):
-    with open(file_path, 'r') as file:
-        config = json.load(file)
-        browser_config = config.get('browser', {})
-    return browser_config
+    return get_config(file_path, 'browser')
+
+
+def get_spider(file_path):
+    return get_config(file_path, 'spider')
+
 
 if __name__ == "__main__":
     config = get_db_config('../config.json')

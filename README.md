@@ -23,6 +23,8 @@
 
 2. 创建数据库和表
 
+    数据库名、表名可以自行修改，参考 [config](#config)
+
     ```sql
     drop database if exists spider_db;
     create database if not exists spider_db;
@@ -56,8 +58,14 @@
     python main.py
     ```
 
-    > 你需要先将爬取的数据导出到 csv 文件（`job_info.csv`），放在 `input_data` 然后运行数据清洗。
-    > 清洗的数据会存入数据库，以及导出到 `output_data` 目录下的 `clean_job_info.csv`。
+    > 你需要先将爬取的数据导出到 csv 文件，放在 `input_data` 然后运行数据清洗。
+    > 清洗的数据会存入数据库，以及导出到 `output_data` 目录。
+
+### config
+
+- `config.json` 配置文件
+
+修改其中参数，如数据库连接信息，爬虫参数，web 页面的一些信息等。
 
 ## Reference
 

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getprovince',
+        url: '/get_province',
         type: 'GET',
         datatype: 'json',
         success: function (data) {

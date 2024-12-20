@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getjobinfo',
+        url: '/get_job_info',
         type: 'GET',
         datatype: 'json',
         success: function (data) {
@@ -9,7 +9,7 @@ $(document).ready(function () {
                 this.error(xhr=obj)
                 return
             }
-            Highcharts.chart('packedbubble', {
+            Highcharts.chart('region', {
                 chart: {
                     type: 'packedbubble',
                     height: '100%',

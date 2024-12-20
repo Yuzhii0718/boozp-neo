@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getjobnum',
+        url: '/get_job_num',
         type: 'GET',
         datatype: 'json',
         success: function (data) {
@@ -12,7 +12,7 @@ $(document).ready(function () {
             var d = new Date(),str = '';
             str += d.getFullYear() + '年'; //获取当前年份
 				str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
-            var chart = Highcharts.chart('cylindrical', {
+            var chart = Highcharts.chart('city', {
                 chart: {
                     type: 'column',
                     backgroundColor: 'rgba(0,0,0,0)'

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getcomtypenum',
+        url: '/get_job_industry_num',
         dataType: 'json',//服务器返回json格式数据
         type: 'GET',//HTTP请求类型
         timeout: 10000,//超时时间设置为10秒；
@@ -10,7 +10,7 @@ $(document).ready(function () {
                 this.error(xhr=data)
                 return
             }
-            Highcharts.chart('pie', {
+            Highcharts.chart('industry', {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -19,7 +19,7 @@ $(document).ready(function () {
                     backgroundColor: 'rgba(0,0,0,0)'
                 },
                 title: {
-                    text: '企业类型占比'
+                    text: '专业占比'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

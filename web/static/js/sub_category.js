@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/getsubcategorynum',
+        url: '/get_sub_category_num',
         dataType: 'json',//服务器返回json格式数据
         type: 'GET',//HTTP请求类型
         timeout: 10000,//超时时间设置为10秒；

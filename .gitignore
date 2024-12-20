@@ -157,3 +157,5 @@ cython_debug/
 # data folder
 output_data/
 input_data/
+
+*.bak

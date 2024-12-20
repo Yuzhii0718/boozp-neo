@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "/getwordcloud",
+        url: "/get_word_cloud",
         // data: "name=John&location=Boston",
         success: function (msg) {
             var obj1 = JSON.parse(msg)
@@ -25,7 +25,7 @@ $(document).ready(function () {
                     }
                     return arr;
                 }, []);
-            Highcharts.chart('word_cloud', {
+            Highcharts.chart('welfare', {
                 chart: {
                     backgroundColor: 'rgba(0,0,0,0)'
                 },

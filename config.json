@@ -9,6 +9,9 @@
     "database": {
         "user": "root",
         "password": "123456",
+        "host": "localhost",
+        "port": 3306,
+        "charset": "utf8",
         "db_name": "spider_db",
         "original_table": "job_info",
         "cleaned_table": "t_boss_zp_info"
@@ -16,5 +19,11 @@
     "browser": {
         "browser_type": "Edge",
         "comment": "Chrome, Edge, Firefox"
+    },
+    "spider": {
+        "url": "https://www.zhipin.com/?city=100010000&ka=city-sites-100010000",
+        "start_page": 1,
+        "end_page": 85,
+        "comment": "The number of pages to crawl 1-85"
     }
 }
