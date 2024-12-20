@@ -1,7 +1,9 @@
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
-"""
-    功能：连接数据库，封装了操作数据库的增删改查等常见操作函数
-"""
+# @author  : Yuzhii
+# @time    : 2024/12/20 17:14
+# @function: 连接数据库，封装了操作数据库的增删改查等常见操作函数
+# @version : V2
 
 import pymysql
 import logging
@@ -21,6 +23,12 @@ class DBUtils(object):
         try:
             self._db_conn = pymysql.connect(host=host, user=user, password=password, port=port, db=db, charset=charset)
             self._db_cursor = self._db_conn.cursor()
+
+            # 初始化操作，例如建立数据库连接等
+            self.conn = pymysql.connect(host=host, user=user, password=password, db=db, port=port, charset=charset)
+            # 获取游标 pymysql.cursors.DictCursor 指定返回值类型为 字典 类型
+            self.cursor = self.conn.cursor(pymysql.cursors.DictCursor)
+
         except Exception as e:
             logging.error(e)
 
@@ -97,6 +105,80 @@ class DBUtils(object):
         :return: affect_rows
         """
         return self.insert(sql_str=sql_str, args=args)
+
+    def select_all(self, sql, args=None):
+        """
+        查询所有数据
+        :param sql: 查询数据的 sql
+        :param args: 参数，只能是元组或者列表
+        :return: 返回结果集
+        """
+        self.cursor.execute(sql, args)
+        result = self.cursor.fetchall()
+        return result
+
+    def select_n(self, sql, n, args=None):
+        """
+        查询满足条件的前 n 条数据
+        :param sql: 查询数据的 sql
+        :param n: 查询的条数
+        :param args: 参数，只能是元组或者列表
+        :return: 返回结果集
+        """
+        self.cursor.execute(sql, args)
+        result = self.cursor.fetchmany(n)
+        return result
+
+    def select_one(self, sql, args=None):
+        """
+        查询满足条件的第 1 条数据
+        :param sql: 查询数据的 sql
+        :param args: 参数，只能是元组或者列表
+        :return: 返回结果集
+        """
+        self.cursor.execute(sql, args)
+        result = self.cursor.fetchone()
+        return result
+
+    def insert_data(self, sql, args=None):
+        """
+        插入数据
+        :param sql: 插入数据的 sql
+        :param args: 参数，只能是元组或者列表
+        :return: 返回受影响的行数
+        """
+        self.cursor.execute(sql, args)
+        self.conn.commit()
+        return self.cursor.rowcount
+
+    def update_data(self, sql, args=None):
+        """
+        更新数据
+        :param sql: 更新数据的 sql
+        :param args: 参数，只能是元组或者列表
+        :return: 返回受影响的行数
+        """
+        self.cursor.execute(sql, args)
+        self.conn.commit()
+        return self.cursor.rowcount
+
+    def delete_data(self, sql, args=None):
+        """
+        删除数据
+        :param sql: 删除数据的 sql
+        :param args: 参数，只能是元组或者列表
+        :return: 返回受影响的行数
+        """
+        self.cursor.execute(sql, args)
+        self.conn.commit()
+        return self.cursor.rowcount
+
+    def close(self):
+        """
+        关闭数据库连接
+        """
+        self.cursor.close()
+        self.conn.close()
 
     def __del__(self):
         """

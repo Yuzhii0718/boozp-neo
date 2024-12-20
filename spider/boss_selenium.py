@@ -4,14 +4,36 @@
 # @time    : 2024/12/19 17:40
 # @function: the script is used to do something.
 # @version : V2
+
 import datetime
 import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from dbutils import DBUtils
+from tools.dbutils import DBUtils
+from tools.get_config import get_db_config
+from tools.get_config import get_browser
 
-browser = webdriver.Edge()
+JSON_PATH = 'config.json'
+db_info = get_db_config(JSON_PATH)
+db_user = db_info['user']
+db_password = db_info['password']
+db_name = db_info['db_name']
+
+browsers = get_browser(JSON_PATH)
+browser_type = browsers['browser_type']
+
+print("browser_type:", browser_type)
+
+if browser_type == 'Edge':
+    browser = webdriver.Edge()
+elif browser_type == 'Chrome':
+    browser = webdriver.Chrome()
+elif browser_type == 'Firefox':
+    browser = webdriver.Firefox()
+else:
+    raise ValueError(f"Unsupported browser type: {browser_type}")
+
 index_url = 'https://www.zhipin.com/?city=100010000&ka=city-sites-100010000'
 today = datetime.date.today().strftime('%Y-%m-%d')
 city_map = {
@@ -64,6 +86,7 @@ city_map = {
     "重庆": ["重庆"]
 }
 
+
 def init_browser():
     # 缩放至 75%
     browser.execute_script("document.body.style.zoom='75%'")
@@ -72,11 +95,13 @@ def init_browser():
     # 给 tab 元素添加css height=800px
     browser.execute_script("arguments[0].setAttribute('style', 'height: 800px;')", tab_ele)
 
+
 # 模拟点击 互联网/AI 展示出岗位分类
 def click_show():
     show_ele = browser.find_element(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/dd/b')
     show_ele.click()
     time.sleep(2)
+
 
 def retry_web():
     browser.get(index_url)
@@ -84,6 +109,7 @@ def retry_web():
     init_browser()
     # 模拟点击 互联网/AI 展示出岗位分类
     click_show()
+
 
 # 打开 boss 首页
 browser.get(index_url)
@@ -94,18 +120,21 @@ init_browser()
 click_show()
 
 for i in range(1, 85):
-    current_a = browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i]
+    current_a = browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
+        i]
     current_category = current_a.find_element(by=By.XPATH, value='../../h4').text
     sub_category = current_a.text
     # 当前 i 位置的分类
     print("正在抓取第{}个分类".format(i))
     print("{}正在抓取{}--{}".format(today, current_category, sub_category))
     try:
-        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i].click()
+        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
+            i].click()
     except:
         time.sleep(2)
         retry_web()
-        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i].click()
+        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
+            i].click()
     # 模拟滑动页面
     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(10)
@@ -116,7 +145,7 @@ for i in range(1, 85):
                                        value='//*[@id="wrap"]/div[2]/div[2]/div/div[1]/div[2]/ul/li')
     for job in job_detail:
         # 获取数据库连接
-        db = DBUtils('localhost', 'root', '123456', 'spider_db')
+        db = DBUtils('localhost', db_user, db_password, db_name)
         # 岗位名称
         try:
             job_title = job.find_element(by=By.XPATH, value="./div[1]/a/div[1]/span[1]").text.strip()

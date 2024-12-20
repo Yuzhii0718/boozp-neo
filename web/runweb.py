@@ -4,8 +4,16 @@
 """
 
 from flask import Flask, render_template
-from web.dbutils import DBUtils
 import json
+
+from tools.dbutils import DBUtils
+from tools.get_config import get_db_config
+
+JSON_PATH = 'config.json'
+db_info = get_db_config(JSON_PATH)
+db_user = db_info['user']
+db_password = db_info['password']
+db_name = db_info['db_name']
 
 app = Flask(__name__)
 
@@ -15,7 +23,7 @@ def get_db_conn():
     获取数据库连接
     :return: db_conn 数据库连接对象
     """
-    return DBUtils(host='localhost', user='root', password='123456', db='spider_db')
+    return DBUtils(host='localhost', user=db_user, password=db_password, db=db_name)
 
 
 def msg(status, data='未加载到数据'):
@@ -86,7 +94,9 @@ def get_job_num():
     :return:
     """
     db_conn = get_db_conn()
-    results = db_conn.get_all(sql_str="SELECT city,COUNT(1) num FROM t_boss_zp_info GROUP BY city")
+    results = db_conn.get_all(
+        sql_str="SELECT city, COUNT(1) num FROM t_boss_zp_info GROUP BY city HAVING num > 10"
+    )
     if results is None or len(results) == 0:
         return msg(201)
     if results is None or len(results) == 0:
@@ -158,7 +168,8 @@ def geteducationnum():
     """
     db_conn = get_db_conn()
     results = db_conn.get_all(
-        sql_str="SELECT t1.job_education,ROUND(t1.num/(SELECT SUM(t2.num) FROM(SELECT COUNT(1) num FROM t_boss_zp_info t GROUP BY t.job_education)t2)*100,2) FROM( SELECT t.job_education,COUNT(1) num FROM t_boss_zp_info t GROUP BY t.job_education) t1")
+        sql_str="SELECT t1.job_education,ROUND(t1.num/(SELECT SUM(t2.num) FROM(SELECT COUNT(1) num FROM t_boss_zp_info t GROUP BY t.job_education)t2)*100,2) FROM( SELECT t.job_education,COUNT(1) num FROM t_boss_zp_info t GROUP BY t.job_education) t1"
+    )
     if results is None or len(results) == 0:
         return msg(201)
     data = []
@@ -214,9 +225,10 @@ def getjson():
     static/config/config.json
     :return:
     """
-    with open('config.json', 'r') as file:
+    with open(JSON_PATH, 'r') as file:
         config = json.load(file)
-    return msg(200, config)
+        normal_data = config.get('normal', {})
+    return msg(200, normal_data)
 
 
 if __name__ == '__main__':

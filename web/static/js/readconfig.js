@@ -10,9 +10,10 @@ $(document).ready(function () {
                 return
             }
             $(function () {
-                console.log(obj)
+                    // console.log(obj.text)
                     $("#author").text(obj.data.author);
                     $("#date").text(obj.data.date);
+                    $("#get_time").text(obj.data.get_time);
                     $("#version").text(obj.data.ver);
                     $("#description").text(obj.data.des);
                 }

@@ -1,6 +1,20 @@
 {
-    "author": "Yuzhii",
-    "date": "2024-12",
-    "ver": "1.0.0",
-    "des": "This is a sample configuration file."
+    "normal": {
+        "author": "Yuzhii",
+        "date": "2024-12",
+        "get_time": "2024-12-19",
+        "ver": "v1.0.0",
+        "des": "This is a sample configuration file."
+    },
+    "database": {
+        "user": "root",
+        "password": "123456",
+        "db_name": "spider_db",
+        "original_table": "job_info",
+        "cleaned_table": "t_boss_zp_info"
+    },
+    "browser": {
+        "browser_type": "Edge",
+        "comment": "Chrome, Edge, Firefox"
+    }
 }
