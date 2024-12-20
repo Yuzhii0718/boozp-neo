@@ -21,7 +21,8 @@ $(document).ready(function () {
                     text: '全国各大城市岗位数量'
                 },
                 subtitle: {
-                    text: '数据截止 '+str+'，来源: <a href="https://zhipin.com">Boss直聘</a>'
+                    // text: '数据截止 '+str+'，来源: <a href="https://zhipin.com">Boss直聘</a>'
+                    text: '来源: <a href="https://zhipin.com">Boss直聘</a>'
                 },
                 xAxis: {
                     type: 'category',

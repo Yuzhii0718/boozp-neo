@@ -207,5 +207,17 @@ def getfieldorder():
     return msg(200, data)
 
 
+@app.route('/getjson')
+def getjson():
+    """
+    获取配置文件信息
+    static/config/config.json
+    :return:
+    """
+    with open('config.json', 'r') as file:
+        config = json.load(file)
+    return msg(200, config)
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)

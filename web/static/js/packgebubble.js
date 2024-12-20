@@ -16,7 +16,7 @@ $(document).ready(function () {
                     backgroundColor: 'rgba(0,0,0,0)'
                 },
                 title: {
-                    text: '2024年12年热门岗位招聘区域分布'
+                    text: '热门岗位招聘区域分布'
                 },
                 tooltip: {
                     useHTML: true,

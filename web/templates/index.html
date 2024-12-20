@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>BOSS直聘岗位分析可视化{2024年12月}</title>
+    <title>BOSS直聘岗位分析可视化</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="icon" href="{{ url_for('static', filename = 'img/favicon.png') }}">
@@ -24,12 +24,16 @@
     <script src="{{ url_for('static', filename = 'js/order.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/fieldorder.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/fullscreen.js') }}"></script>
-
+    <script src="{{ url_for('static', filename = 'js/readconfig.js') }}"></script>
 </head>
 <body>
 <div class="index">
     <div class="title">
-        <p>Boss直聘岗位分析可视化</p>
+        <p>BOSS直聘 互联网/AI 岗位分析可视化 <span id="version"></span></p>
+    </div>
+    <div id="config-info">
+{#        <p>作者: <span id="author"></span></p>#}
+        <p>数据截至日期: <span id="date"></span></p>
     </div>
     <div id="myModal" class="modal">
         <div class="modal-content">
