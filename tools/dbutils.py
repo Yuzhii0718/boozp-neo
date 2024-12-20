@@ -9,8 +9,9 @@ import pymysql
 import logging
 
 from tools.get_config import get_db_config
-JSON_PATH = 'config.json'
-db_info = get_db_config(JSON_PATH)
+
+db_info = get_db_config()
+
 
 class DBUtils(object):
     # 初始化连接对象和游标对象

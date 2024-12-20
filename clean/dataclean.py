@@ -13,12 +13,13 @@ import re
 
 from tools.get_config import get_normal
 from tools.get_config import get_db_config
+from tools.get_config import get_cleaner
 from tools.dbutils import DBUtils
 
-JSON_PATH = 'config.json'
-normal = get_normal(JSON_PATH)
+normal = get_normal()
 normal_time = normal['get_time']
-db_info = get_db_config(JSON_PATH)
+
+db_info = get_db_config()
 db_user = db_info['user']
 db_password = db_info['password']
 db_name = db_info['db_name']
@@ -28,6 +29,9 @@ db_charset = db_info['charset']
 db_otable = db_info['original_table']
 db_ctable = db_info['cleaned_table']
 
+cleaner = get_cleaner()
+source_data = cleaner['source_data']
+
 # 如果不存在 input_data, output_data 文件夹，则创建
 if not os.path.exists('input_data'):
     os.makedirs('input_data')
@@ -36,11 +40,21 @@ if not os.path.exists('output_data'):
 
 in_csv_path = 'input_data/{}.csv'.format(db_otable)
 
-# 读取 招聘数据.csv 文件
-all_city_zp_df = pd.read_csv(in_csv_path, encoding=db_charset, header=None,
-                             names=["category", "sub_category", "job_title", "province", "job_location", "job_company",
-                                    "job_industry", "job_finance", "job_scale", "job_welfare", "job_salary_range",
-                                    "job_experience", "job_education", "job_skills", "create_time"])
+# 读取 招聘数据
+if source_data == 'csv':
+    all_city_zp_df = pd.read_csv(in_csv_path, encoding=db_charset, header=None,
+                                 names=["category", "sub_category", "job_title", "province", "job_location",
+                                        "job_company",
+                                        "job_industry", "job_finance", "job_scale", "job_welfare", "job_salary_range",
+                                        "job_experience", "job_education", "job_skills", "create_time"])
+elif source_data == 'mysql':
+    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
+                                                                  db_charset)
+    engine = create_engine(sql_path)
+    all_city_zp_df = pd.read_sql_table(db_otable, engine)
+else:
+    logging.error("source_data is not supported!")
+    print("source_data is not supported!")
 
 # 对重复行进行清洗。
 all_city_zp_df.drop_duplicates(inplace=True)

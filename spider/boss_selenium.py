@@ -16,14 +16,13 @@ from tools.get_config import get_db_config
 from tools.get_config import get_browser
 from tools.get_config import get_spider
 
-JSON_PATH = 'config.json'
-db_info = get_db_config(JSON_PATH)
+db_info = get_db_config()
 db_table = db_info['original_table']
 
-browsers = get_browser(JSON_PATH)
+browsers = get_browser()
 browser_type = browsers['browser_type']
 
-spider = get_spider(JSON_PATH)
+spider = get_spider()
 start_page = spider['start_page']
 end_page = spider['end_page']
 crawl_url = spider['url']
@@ -126,7 +125,7 @@ click_show()
 
 for i in range(start_page, end_page):
     category_label = \
-    browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i]
+        browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[i]
     current_a = browser.find_elements(by=By.XPATH, value='//*[@id="main"]/div/div[1]/div/div[1]/dl[1]/div/ul/li/div/a')[
         i]
     current_category = current_a.find_element(by=By.XPATH, value='../../h4').text

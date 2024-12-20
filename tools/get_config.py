@@ -7,31 +7,37 @@
 
 import json
 
+JSON_PATH = 'config.json'
 
-def get_config(file_path, section):
-    with open(file_path, 'r') as file:
+
+def get_config(section):
+    with open(JSON_PATH, 'r') as file:
         config = json.load(file)
         return config.get(section, {})
 
 
-def get_normal(file_path):
-    return get_config(file_path, 'normal')
+def get_normal():
+    return get_config('normal')
 
 
-def get_db_config(file_path):
-    return get_config(file_path, 'database')
+def get_db_config():
+    return get_config('database')
 
 
-def get_browser(file_path):
-    return get_config(file_path, 'browser')
+def get_browser():
+    return get_config('browser')
 
 
-def get_spider(file_path):
-    return get_config(file_path, 'spider')
+def get_spider():
+    return get_config('spider')
+
+
+def get_cleaner():
+    return get_config('cleaner')
 
 
 if __name__ == "__main__":
-    config = get_db_config('../config.json')
+    config = get_db_config()
     print("user:", config['user'])
     print("db_name:", config['db_name'])
     print("original_table:", config['original_table'])

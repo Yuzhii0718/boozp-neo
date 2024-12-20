@@ -12,7 +12,7 @@ from tools.dbutils import DBUtils
 from tools.get_config import get_db_config
 
 JSON_PATH = 'config.json'
-db_info = get_db_config(JSON_PATH)
+db_info = get_db_config()
 db_ctable = db_info['cleaned_table']
 
 app = Flask(__name__)
@@ -118,6 +118,7 @@ def get_job_num():
     sql_str = "SELECT city, COUNT(1) num FROM {} GROUP BY city HAVING num > 5".format(db_ctable)
     return get_data(sql_str, 'b')
 
+
 @app.route('/get_min_salary')
 def get_min_salary():
     """
@@ -127,6 +128,7 @@ def get_min_salary():
     """
     sql_str = "SELECT salary_lower, COUNT(1) num FROM {} GROUP BY salary_lower HAVING num > 10".format(db_ctable)
     return get_data(sql_str, 'b')
+
 
 @app.route('/get_province')
 def get_province():
@@ -174,6 +176,7 @@ def get_education_num():
         tab=db_ctable)
     return get_data(sql_str)
 
+
 @app.route('/get_com_finance')
 def get_com_finance():
     """
@@ -184,6 +187,7 @@ def get_com_finance():
     sql_str = "SELECT job_finance, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {tab} GROUP BY job_finance) t1)*100,2) percent FROM {tab} GROUP BY job_finance".format(
         tab=db_ctable)
     return get_data(sql_str)
+
 
 # 获取排行榜
 @app.route('/get_order')

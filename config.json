@@ -25,5 +25,9 @@
         "start_page": 1,
         "end_page": 85,
         "comment": "The number of pages to crawl 1-85"
+    },
+    "cleaner": {
+        "source_data": "csv",
+        "comment": "csv, mysql"
     }
 }
