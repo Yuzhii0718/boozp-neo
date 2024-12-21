@@ -23,7 +23,7 @@ def main():
         os.system('python ./web/runweb.py')
     elif choice == 'init':
         confirm = input("This operation will drop the old database and create a new one. Are you sure? (Y/n): ")
-        if confirm.lower() == 'Y':
+        if confirm.format() == 'Y':
             db_utils.init_table()
         else:
             print("Initialization cancelled.")
