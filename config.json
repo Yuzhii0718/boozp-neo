@@ -45,6 +45,7 @@
         "min_salary_num": 10,
         "min_province_num": 20,
         "top_company_num": 10,
-        "top_field_num": 10
+        "top_field_num": 10,
+        "comment": "The number of min data to display"
     }
 }
