@@ -4,6 +4,8 @@
 
 并分析数据，生成图表仪表盘，显示于 web 页面。
 
+在线演示：[BOSS直聘 互联网/AI 岗位分析可视化](https://yuzhii0718.eu.org/boozp-neo/)
+
 ## Usage
 
 1. Environment
@@ -58,7 +60,7 @@
     python main.py
     ```
 
-    > 数据清洗如果选择 csv 方式，需要爬取的数据导出到 csv 文件，放在 `input_data` 目录下。
+    > 数据清洗如果选择 csv 方式（参考 [config](#config)），需要爬取的数据导出到 csv 文件，放在 `input_data` 目录下。
     > 清洗的数据会存入数据库，以及导出到 `output_data` 目录。
 
 ### config
