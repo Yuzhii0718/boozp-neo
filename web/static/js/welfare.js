@@ -3,6 +3,7 @@ $(document).ready(function () {
         type: "GET",
         url: "/get_word_cloud",
         // data: "name=John&location=Boston",
+        timeout: 5000,//超时时间设置为5秒；
         success: function (msg) {
             var obj1 = JSON.parse(msg)
             if (obj1.status == 201) {
@@ -39,7 +40,8 @@ $(document).ready(function () {
             });
         },
         erro: function (xhr, type, errorThrown) {
-            alert(xhr.data)
+            // alert(xhr.data)
+            console.log('Ajax error!' + xhr.data);
         }
     });
 });

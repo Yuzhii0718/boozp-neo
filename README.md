@@ -23,46 +23,13 @@
     | python | 3.9.13 |
     | mysql | 8.3 |
 
-2. Create Database
-
-    数据库名、表名可以自行修改，参考 [config](#config)
-
-    ```sql
-    drop database if exists spider_db;
-    create database if not exists spider_db;
-        
-    use spider_db;
-
-    drop table if exists job_info;
-    create table spider_db.job_info
-    (
-        category         varchar(255) null comment '一级分类',
-        sub_category     varchar(255) null comment '二级分类',
-        job_title        varchar(255) null comment '岗位名称',
-        province         varchar(100) null comment '省份',
-        job_location     varchar(255) null comment '工作位置',
-        job_company      varchar(255) null comment '企业名称',
-        job_industry     varchar(255) null comment '行业类型',
-        job_finance      varchar(255) null comment '融资情况',
-        job_scale        varchar(255) null comment '企业规模',
-        job_welfare      varchar(255) null comment '企业福利',
-        job_salary_range varchar(255) null comment '薪资范围',
-        job_experience   varchar(255) null comment '工作年限',
-        job_education    varchar(255) null comment '学历要求',
-        job_skills       varchar(255) null comment '技能要求',
-        create_time      varchar(50)  null comment '抓取时间'
-    );
-    ```
-
-    > 或者在 main.py 中运行 'init_db()' 函数，自动创建数据库和表。
-    > 但是我没有测试过，不保证能够成功。~~不想删库~~
-
 3. Run
 
     ```bash
     python main.py
     ```
-
+    
+    > 初次使用需要先 init 数据库
     > 数据清洗如果选择 csv 方式（参考 [config](#config)），需要爬取的数据导出到 csv 文件，放在 `input_data` 目录下。
     > 清洗的数据会存入数据库，以及导出到 `output_data` 目录。
 

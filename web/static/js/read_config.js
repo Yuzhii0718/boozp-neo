@@ -23,7 +23,8 @@ $(document).ready(function () {
                 }
             )
         }, error: function (xhr, type, errorThrown) {
-            alert(xhr.config)
+            // alert(xhr.config)
+            console.log('Ajax error!' + xhr.data);
         }
     })
 })

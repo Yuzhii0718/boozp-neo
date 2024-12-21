@@ -12,13 +12,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from tools.dbutils import DBUtils
-from tools.get_config import get_db_config
-from tools.get_config import get_spider
+from tools.configmanager import ConfigManager as cm
 
-db_info = get_db_config()
+db_info = cm.database()
 db_table = db_info['original_table']
 
-spider = get_spider()
+spider = cm.spider()
 start_page = spider['start_page']
 end_page = spider['end_page']
 crawl_url = spider['url']

@@ -3,6 +3,7 @@ $(document).ready(function () {
         url: '/get_field_order',
         type: 'GET',
         datatype: 'json',
+        timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
             var obj = JSON.parse(data);
             if (obj.status == 201){
@@ -24,7 +25,8 @@ $(document).ready(function () {
                 }
             });
         }, error: function (xhr, type, errorThrown) {
-            alert(xhr.data)
+            // alert(xhr.data)
+            console.log('Ajax error!' + xhr.data);
         }
     })
 })

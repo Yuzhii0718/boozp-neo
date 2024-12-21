@@ -11,15 +11,13 @@ import logging
 import os
 import re
 
-from tools.get_config import get_normal
-from tools.get_config import get_db_config
-from tools.get_config import get_cleaner
+from tools.configmanager import ConfigManager as cm
 from tools.dbutils import DBUtils
 
-normal = get_normal()
+normal = cm.normal()
 normal_time = normal['get_time']
 
-db_info = get_db_config()
+db_info = cm.database()
 db_user = db_info['user']
 db_password = db_info['password']
 db_name = db_info['db_name']
@@ -29,7 +27,7 @@ db_charset = db_info['charset']
 db_otable = db_info['original_table']
 db_ctable = db_info['cleaned_table']
 
-cleaner = get_cleaner()
+cleaner = cm.cleaner()
 source_data = cleaner['source_data']
 export_data = cleaner['export_data']
 # skip_first_line 值为 True 时，删除 csv 文件的第一行

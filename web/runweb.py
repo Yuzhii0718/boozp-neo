@@ -9,18 +9,16 @@ from flask import Flask, render_template
 import json
 
 from tools.dbutils import DBUtils
-from tools.get_config import get_db_config
-from tools.get_config import get_web
-from tools.get_config import get_show
+from tools.configmanager import ConfigManager as cm
 
 JSON_PATH = 'config.json'
-db_info = get_db_config()
+db_info = cm.database()
 db_ctable = db_info['cleaned_table']
-web_server = get_web()
+web_server = cm.web()
 web_host = web_server.get('web_host', '127.0.0.1')
 web_port = web_server.get('web_port', 5000)
 
-shower = get_show()
+shower = cm.show()
 min_region_num = shower['min_region_num']
 min_city_num = shower['min_city_num']
 min_province_num = shower['min_province_num']
@@ -29,6 +27,8 @@ top_company_num = shower['top_company_num']
 top_field_num = shower['top_field_num']
 
 app = Flask(__name__)
+
+app.config['RESTFUL_JSON'] = {'timeout': 60}
 
 
 def get_db_conn():
