@@ -25,27 +25,19 @@ class DBUtils(object):
 
     def __init__(self):
         try:
+            # 初始化操作，例如建立数据库连接等
             self._db_conn = pymysql.connect(
                 host=db_info['host'],
                 user=db_info['user'],
                 password=db_info['password'],
-                port=db_info['port'],
                 db=db_info['db_name'],
+                port=db_info['port'],
                 charset=db_info['charset']
             )
+            
             self._db_cursor = self._db_conn.cursor()
-
-            # 初始化操作，例如建立数据库连接等
-            self.conn = pymysql.connect(
-                host=db_info['host'],
-                user=db_info['user'],
-                password=db_info['password'],
-                db=db_info['db_name'],
-                port=db_info['port'],
-                charset='utf8'
-            )
             # 获取游标 pymysql.cursors.DictCursor 指定返回值类型为 字典 类型
-            self.cursor = self.conn.cursor(pymysql.cursors.DictCursor)
+            self.cursor = self._db_conn.cursor(pymysql.cursors.DictCursor)
 
         except Exception as e:
             logging.error(e)
@@ -93,7 +85,7 @@ class DBUtils(object):
         :return: 返回受影响的行数
         """
         self.cursor.execute(sql, args)
-        self.conn.commit()
+        self._db_conn.commit()
         return self.cursor.rowcount
 
     def modify_comment(self, table_name, column_name, comment):
@@ -106,14 +98,14 @@ class DBUtils(object):
         """
         sql = "ALTER TABLE {} MODIFY {} VARCHAR(255) COMMENT '{}'".format(table_name, column_name, comment)
         self.cursor.execute(sql)
-        self.conn.commit()
+        self._db_conn.commit()
 
     def close(self):
         """
         关闭数据库连接
         """
         self.cursor.close()
-        self.conn.close()
+        self._db_conn.close()
 
     def __del__(self):
         """
