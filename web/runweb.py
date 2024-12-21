@@ -10,10 +10,23 @@ import json
 
 from tools.dbutils import DBUtils
 from tools.get_config import get_db_config
+from tools.get_config import get_web
+from tools.get_config import get_show
 
 JSON_PATH = 'config.json'
 db_info = get_db_config()
 db_ctable = db_info['cleaned_table']
+web_server = get_web()
+web_host = web_server.get('web_host', '127.0.0.1')
+web_port = web_server.get('web_port', 5000)
+
+shower = get_show()
+min_region_num = shower['min_region_num']
+min_city_num = shower['min_city_num']
+min_province_num = shower['min_province_num']
+min_salary_num = shower['min_salary_num']
+top_company_num = shower['top_company_num']
+top_field_num = shower['top_field_num']
 
 app = Flask(__name__)
 
@@ -40,6 +53,8 @@ def get_data(sql_str, method='a'):
     results = db_conn.get_all(sql_str)
     if results is None or len(results) == 0:
         return msg(201)
+    # 进行处理，过滤掉 值为 无 的数据
+    results = list(filter(lambda x: x[0] != '无', results))
     data = []
     if method == 'a':
         for r in results:
@@ -83,13 +98,13 @@ def get_word_cloud():
 def get_job_info():
     """
     获取热门岗位招聘区域分布
-    :keyword: city, district 聚合图
+    :keyword: city, district 聚合图 region
     :return:
     """
     db_conn = get_db_conn()
     results = db_conn.get_all(
-        sql_str="SELECT city, district, COUNT(1) as num FROM {} GROUP BY city, district HAVING num > 20".format(
-            db_ctable)
+        sql_str="SELECT city, district, COUNT(1) as num FROM {} GROUP BY city, district HAVING num > {}"
+        .format(db_ctable, min_region_num)
     )
 
     if results is None or len(results) == 0:
@@ -115,7 +130,8 @@ def get_job_num():
     keyword: city 柱状图 城市
     :return:
     """
-    sql_str = "SELECT city, COUNT(1) num FROM {} GROUP BY city HAVING num > 5".format(db_ctable)
+    sql_str = ("SELECT city, COUNT(1) num FROM {} GROUP BY city HAVING num > {}"
+               .format(db_ctable, min_city_num))
     return get_data(sql_str, 'b')
 
 
@@ -123,10 +139,11 @@ def get_job_num():
 def get_min_salary():
     """
     获取最低薪资
-    keyword: salary_lower 柱状图 最低薪资
+    keyword: salary_lower 柱状图 最低薪资 min_salary_num
     :return:
     """
-    sql_str = "SELECT salary_lower, COUNT(1) num FROM {} GROUP BY salary_lower HAVING num > 10".format(db_ctable)
+    sql_str = ("SELECT salary_lower, COUNT(1) num FROM {} GROUP BY salary_lower HAVING num > {}"
+               .format(db_ctable, min_salary_num))
     return get_data(sql_str, 'b')
 
 
@@ -137,7 +154,8 @@ def get_province():
     :keyword: province 聚合图 省份
     :return:
     """
-    sql_str = "SELECT province,COUNT(1) num FROM {} GROUP BY province".format(db_ctable)
+    sql_str = ("SELECT province,COUNT(1) num FROM {} GROUP BY province HAVING num > {}"
+               .format(db_ctable, min_province_num))
     return get_data(sql_str, 'b')
 
 
@@ -148,7 +166,9 @@ def get_job_industry_num():
     :keyword: job_industry 饼图 专业类型
     :return:
     """
-    sql_str = "SELECT job_industry, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM t_boss_zp_info GROUP BY job_industry) t1)*100,2) percent FROM t_boss_zp_info GROUP BY job_industry"
+    sql_str = (
+        "SELECT job_industry, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {} GROUP BY job_industry) t1)*100,2) percent FROM {} GROUP BY job_industry"
+        .format(db_ctable, db_ctable))
     return get_data(sql_str)
 
 
@@ -172,8 +192,9 @@ def get_education_num():
     :keyword: job_education 半环图 学历
     :return:
     """
-    sql_str = "SELECT job_education, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {tab} GROUP BY job_education) t1)*100,2) percent FROM {tab} GROUP BY job_education".format(
-        tab=db_ctable)
+    sql_str = (
+        "SELECT job_education, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {tab} GROUP BY job_education) t1)*100,2) percent FROM {tab} GROUP BY job_education"
+        .format(tab=db_ctable))
     return get_data(sql_str)
 
 
@@ -184,8 +205,9 @@ def get_com_finance():
     :keyword: job_education 半环图 金融
     :return:
     """
-    sql_str = "SELECT job_finance, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {tab} GROUP BY job_finance) t1)*100,2) percent FROM {tab} GROUP BY job_finance".format(
-        tab=db_ctable)
+    sql_str = (
+        "SELECT job_finance, ROUND(COUNT(1)/(SELECT SUM(t1.num) FROM (SELECT COUNT(1) num FROM {tab} GROUP BY job_finance) t1)*100,2) percent FROM {tab} GROUP BY job_finance"
+        .format(tab=db_ctable))
     return get_data(sql_str)
 
 
@@ -197,8 +219,8 @@ def get_order():
     :keyword: job_company 列表 企业
     :return:
     """
-    sql_str = "SELECT job_company,COUNT(1) FROM {} GROUP BY job_company ORDER BY COUNT(1) DESC LIMIT 10".format(
-        db_ctable)
+    sql_str = ("SELECT job_company,COUNT(1) FROM {} GROUP BY job_company ORDER BY COUNT(1) DESC LIMIT {}"
+               .format(db_ctable, top_company_num))
     return get_data(sql_str, 'c')
 
 
@@ -210,8 +232,8 @@ def get_field_order():
     :keyword: job_industry 列表 开发方向
     :return:
     """
-    sql_str = "SELECT job_industry,COUNT(1) FROM {} GROUP BY job_industry ORDER BY COUNT(1) DESC LIMIT 10".format(
-        db_ctable)
+    sql_str = ("SELECT job_industry,COUNT(1) FROM {} GROUP BY job_industry ORDER BY COUNT(1) DESC LIMIT {}"
+               .format(db_ctable, top_field_num))
     return get_data(sql_str, 'c')
 
 
@@ -228,4 +250,4 @@ def get_json():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(web_host, web_port, debug=True)

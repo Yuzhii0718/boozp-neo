@@ -22,7 +22,7 @@ $(document).ready(function () {
                 },
                 subtitle: {
                     // text: '数据截止 '+str+'，来源: <a href="https://zhipin.com">Boss直聘</a>'
-                    text: '来源: <a href="https://zhipin.com">Boss直聘</a>'
+                    text: '来源: <a href="https://zhipin.com" style="color: white">Boss直聘</a>'
                 },
                 xAxis: {
                     type: 'category',

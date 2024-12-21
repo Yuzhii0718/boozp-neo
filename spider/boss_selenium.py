@@ -13,19 +13,16 @@ from selenium.webdriver.common.by import By
 
 from tools.dbutils import DBUtils
 from tools.get_config import get_db_config
-from tools.get_config import get_browser
 from tools.get_config import get_spider
 
 db_info = get_db_config()
 db_table = db_info['original_table']
 
-browsers = get_browser()
-browser_type = browsers['browser_type']
-
 spider = get_spider()
 start_page = spider['start_page']
 end_page = spider['end_page']
 crawl_url = spider['url']
+browser_type = spider['browser_type']
 
 print("browser_type:", browser_type)
 

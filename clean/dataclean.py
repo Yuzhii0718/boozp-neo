@@ -31,6 +31,14 @@ db_ctable = db_info['cleaned_table']
 
 cleaner = get_cleaner()
 source_data = cleaner['source_data']
+export_data = cleaner['export_data']
+# skip_first_line 值为 True 时，删除 csv 文件的第一行
+skip_first_line = cleaner.get('skip_first_line', False)
+print("skip_first_line:", skip_first_line)
+delete_null_data = cleaner.get('delete_null_data', False)
+print("delete_null_data:", delete_null_data)
+fill_null_data = cleaner.get('fill_null_data', False)
+print("fill_null_data:", fill_null_data)
 
 # 如果不存在 input_data, output_data 文件夹，则创建
 if not os.path.exists('input_data'):
@@ -40,16 +48,41 @@ if not os.path.exists('output_data'):
 
 in_csv_path = 'input_data/{}.csv'.format(db_otable)
 
+
+# 先删除文件的第一行
+def remove_first_line(in_csv_path, db_charset='utf-8'):
+    try:
+        # 读取文件的所有行
+        with open(in_csv_path, 'r', encoding=db_charset) as f:
+            lines = f.readlines()
+
+        # 写回文件，跳过第一行
+        with open(in_csv_path, 'w', encoding=db_charset) as f:
+            for line in lines[1:]:
+                f.write(line)
+        print("The first line has been removed successfully")
+    except Exception as e:
+        print(f"Fails to remove the first line: {e}")
+
+
 # 读取 招聘数据
 if source_data == 'csv':
+    if not os.path.exists(in_csv_path):
+        logging.error("File {} does not exist!".format(in_csv_path))
+        print("File {} does not exist!".format(in_csv_path))
+        exit(1)
+    # 先删除 csv 的第一行
+    if skip_first_line:
+        remove_first_line(in_csv_path, db_charset)
     all_city_zp_df = pd.read_csv(in_csv_path, encoding=db_charset, header=None,
                                  names=["category", "sub_category", "job_title", "province", "job_location",
                                         "job_company",
                                         "job_industry", "job_finance", "job_scale", "job_welfare", "job_salary_range",
                                         "job_experience", "job_education", "job_skills", "create_time"])
+
 elif source_data == 'mysql':
-    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
-                                                                  db_charset)
+    sql_path = ("mysql+pymysql://{}:{}@{}:{}/{}?charset={}".
+                format(db_user, db_password, db_host, db_port, db_name, db_charset))
     engine = create_engine(sql_path)
     all_city_zp_df = pd.read_sql_table(db_otable, engine)
 else:
@@ -99,6 +132,8 @@ def convert_salary(salary):
             lower = str(int(match.group(1)) * 1000) + '元/月'
             upper = str(int(match.group(2)) * 1000) + '元/月'
             return lower, upper
+    elif '面议' in salary:
+        return salary, salary
     return None, None
 
 
@@ -107,10 +142,6 @@ all_city_zp_df['salary_lower'] = all_city_zp_salary_df.apply(lambda x: x[0])
 all_city_zp_df['salary_high'] = all_city_zp_salary_df.apply(lambda x: x[1])
 all_city_zp_df.head()
 
-
-# 对`薪资`字段进行预处理。要求：30-60K·15薪 --> 最低：30，最高：60
-# all_city_zp_salary_df = all_city_zp_df['job_salary_range'].str.split('K', expand=True)[0].str.split('-', expand=True)
-# all_city_zp_salary_df = all_city_zp_salary_df.rename(columns={0: 'salary_lower', 1: 'salary_high'})
 
 # 对 ’企业融资情况‘进行处理，如果是‘1000-9999人’这种格式的数据，则返回 "未融资”，列名为 job_finance
 def fun_com_finance(x):
@@ -139,9 +170,6 @@ def fun_work_year(x):
         return 0
 
 
-all_city_zp_df['job_experience'] = all_city_zp_df['job_experience'].apply(lambda x: fun_work_year(x))
-
-
 # 对`企业规模`字段进行预处理。要求：500人以下：0，500-999：1，1000-9999：2，10000人以上：3
 def fun_com_size(x):
     if x in "500-999人":
@@ -152,6 +180,10 @@ def fun_com_size(x):
         return 3
     else:
         return 0
+
+
+# all_city_zp_df['job_experience'] = all_city_zp_df['job_experience'].apply(lambda x: fun_work_year(x))
+# all_city_zp_df['job_scale'] = all_city_zp_df['job_scale'].apply(lambda x: fun_com_size(x))
 
 
 # 对`岗位福利`字段进行预处理。要求：将描述中的中文'，'（逗号）,替换成英文','（逗号）
@@ -170,52 +202,73 @@ clean_all_city_zp_df.drop('community', axis=1, inplace=True)  # 删除原社区(
 clean_all_city_zp_df['get_time'] = normal_time
 
 # 对缺失值所在行进行清洗。
-clean_all_city_zp_df.dropna(axis=0, how='any', inplace=True)
-clean_all_city_zp_df.drop(axis=0,
-                          index=clean_all_city_zp_df.loc[(clean_all_city_zp_df['job_welfare'] == 'None')].index,
-                          inplace=True)
+if delete_null_data:
+    clean_all_city_zp_df.dropna(axis=0, how='any', inplace=True)
+    clean_all_city_zp_df.drop(axis=0,
+                              index=clean_all_city_zp_df.loc[(clean_all_city_zp_df['job_welfare'] == 'None')].index,
+                              inplace=True)
 
-try:
-    # 将处理后的数据保存到 MySQL 数据库
-    sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
-                                                                  db_charset)
-    engine = create_engine(sql_path)
-    clean_all_city_zp_df.to_sql(db_ctable, con=engine, if_exists='replace')
+# 对缺失值所在行进行填充。
+if fill_null_data:
+    clean_all_city_zp_df.fillna(value='无', inplace=True)
 
-    comments = {
-        'category': '岗位类别',
-        'sub_category': '岗位子类',
-        'job_title': '岗位名称',
-        'province': '省份',
-        'city': '城市',
-        'district': '区',
-        'street': '街道',
-        'job_company': '公司名称',
-        'job_industry': '行业类型',
-        'job_finance': '融资情况',
-        'job_scale': '企业规模',
-        'job_welfare': '企业福利',
-        'job_experience': '工作经验',
-        'job_education': '学历要求',
-        'job_skills': '技能要求',
-        'salary_lower': '最低薪资',
-        'salary_high': '最高薪资',
-        'get_time': '采集日期'
-    }
 
-    db = DBUtils()
-    for column, comment in comments.items():
-        db.modify_comment(db_ctable, column, comment)
-    db.close()
+def export2mysql():
+    try:
+        # 将处理后的数据保存到 MySQL 数据库
+        sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
+                                                                      db_charset)
+        engine = create_engine(sql_path)
+        clean_all_city_zp_df.to_sql(db_ctable, con=engine, if_exists='replace')
 
-    logging.info("Write to MySQL Successfully!")
-    print("Write to MySQL Successfully!")
-except Exception as e:
-    logging.error("Failed to write to MySQL: {}".format(e))
-    print("Failed to write to MySQL: {}".format(e))
+        comments = {
+            'category': '岗位类别',
+            'sub_category': '岗位子类',
+            'job_title': '岗位名称',
+            'province': '省份',
+            'city': '城市',
+            'district': '区',
+            'street': '街道',
+            'job_company': '公司名称',
+            'job_industry': '行业类型',
+            'job_finance': '融资情况',
+            'job_scale': '企业规模',
+            'job_welfare': '企业福利',
+            'job_experience': '工作经验',
+            'job_education': '学历要求',
+            'job_skills': '技能要求',
+            'salary_lower': '最低薪资',
+            'salary_high': '最高薪资',
+            'get_time': '采集日期'
+        }
 
-# 导出为 csv 文件
-out_csv_path = 'output_data/clean_{}.csv'.format(db_otable)
-clean_all_city_zp_df.to_csv(out_csv_path, index=False, encoding=db_charset)
-logging.info("Write to CSV Successfully!")
-print("Write to CSV Successfully!")
+        db = DBUtils()
+        for column, comment in comments.items():
+            db.modify_comment(db_ctable, column, comment)
+        db.close()
+
+        logging.info("Write to MySQL Successfully!")
+        print("Write to MySQL Successfully!")
+    except Exception as e:
+        logging.error("Failed to write to MySQL: {}".format(e))
+        print("Failed to write to MySQL: {}".format(e))
+
+
+def export2csv():
+    # 导出为 csv 文件
+    out_csv_path = 'output_data/clean_{}.csv'.format(db_otable)
+    clean_all_city_zp_df.to_csv(out_csv_path, index=False, encoding=db_charset)
+    logging.info("Write to CSV Successfully!")
+    print("Write to CSV Successfully!")
+
+
+if export_data == 'mysql':
+    export2mysql()
+elif export_data == 'csv':
+    export2csv()
+elif export_data == 'both':
+    export2mysql()
+    export2csv()
+else:
+    logging.error("export_data is not supported!")
+    print("export_data is not supported!")

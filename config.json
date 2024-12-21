@@ -16,18 +16,35 @@
         "original_table": "job_info",
         "cleaned_table": "t_boss_zp_info"
     },
-    "browser": {
-        "browser_type": "Edge",
-        "comment": "Chrome, Edge, Firefox"
-    },
     "spider": {
         "url": "https://www.zhipin.com/?city=100010000&ka=city-sites-100010000",
         "start_page": 1,
         "end_page": 85,
-        "comment": "The number of pages to crawl 1-85"
+        "comment": "The number of pages to crawl 1-85",
+        "browser_type": "Edge",
+        "browser_type_comment": "Chrome, Edge, Firefox"
     },
     "cleaner": {
         "source_data": "csv",
-        "comment": "csv, mysql"
+        "source_data_comment": "csv, mysql",
+        "skip_first_line": true,
+        "delete_null_data": false,
+        "fill_null_data": true,
+        "data_comment": "true, false, delete or fill only one can be true",
+        "export_data": "both",
+        "export_data_comment": "csv, mysql, both"
+    },
+    "web_server": {
+        "web_host": "127.0.0.1",
+        "web_port": 5000,
+        "comment": "The host and port of the web server"
+    },
+    "web_show": {
+        "min_region_num": 20,
+        "min_city_num": 15,
+        "min_salary_num": 10,
+        "min_province_num": 20,
+        "top_company_num": 10,
+        "top_field_num": 10
     }
 }

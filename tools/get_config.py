@@ -23,17 +23,19 @@ def get_normal():
 def get_db_config():
     return get_config('database')
 
-
-def get_browser():
-    return get_config('browser')
-
-
 def get_spider():
     return get_config('spider')
 
 
 def get_cleaner():
     return get_config('cleaner')
+
+
+def get_web():
+    return get_config('web_server')
+
+def get_show():
+    return get_config('web_show')
 
 
 if __name__ == "__main__":
