@@ -28,11 +28,14 @@
         "source_data": "csv",
         "source_data_comment": "csv, mysql",
         "skip_first_line": true,
+        "skip_first_line_comment": "In some situations, the first line is not recognized as the header",
         "delete_null_data": false,
         "fill_null_data": true,
         "data_comment": "true, false, delete or fill only one can be true",
         "export_data": "both",
-        "export_data_comment": "csv, mysql, both"
+        "export_data_comment": "csv, mysql, both",
+        "heatmap": false,
+        "heatmap_comment": "true, false, whether to generate a heatmap database"
     },
     "web_server": {
         "web_host": "127.0.0.1",

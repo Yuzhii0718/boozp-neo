@@ -4,12 +4,14 @@
 # @time    : 2024/12/19 20:14
 # @function: 对岗位数据进行清洗与预处理
 # @version : V2
+import time
 
 import pandas as pd
 from sqlalchemy import create_engine
 import logging
 import os
 import re
+from geopy.geocoders import Nominatim
 
 from tools.configmanager import ConfigManager as cm
 from tools.dbutils import DBUtils
@@ -37,6 +39,8 @@ delete_null_data = cleaner.get('delete_null_data', False)
 print("delete_null_data:", delete_null_data)
 fill_null_data = cleaner.get('fill_null_data', False)
 print("fill_null_data:", fill_null_data)
+heatmap = cleaner.get('heatmap', False)
+print("heatmap:", heatmap)
 
 # 如果不存在 input_data, output_data 文件夹，则创建
 if not os.path.exists('input_data'):
@@ -94,6 +98,52 @@ all_city_zp_df.drop_duplicates(inplace=True)
 all_city_zp_area_df = all_city_zp_df['job_location'].str.split('·', expand=True)
 all_city_zp_area_df = all_city_zp_area_df.rename(columns={0: "city", 1: "district", 2: "street", 3: "community"})
 all_city_zp_area_df['community'] = all_city_zp_area_df['community'].fillna('')
+
+
+def heatmap2mysql():
+    try:
+        # 将处理后的数据保存到 MySQL 数据库
+        heatmap_df = heatmap_data()
+        engine = create_engine(sql_path)
+        heatmap_df.to_sql('heatmap_data', con=engine, if_exists='replace')
+    except Exception as e:
+        logging.error("Failed to write to MySQL: {}".format(e))
+        print("Failed to write to MySQL: {}".format(e))
+
+
+def heatmap2csv():
+    # 将 heatmap_df 保存到 csv 文件
+    heatmap_df = heatmap_data()
+    heatmap_df.to_csv('output_data/heatmap_data.csv', index=False, encoding=db_charset)
+    logging.info("Write to CSV Successfully!")
+    print("Write to CSV Successfully!")
+
+
+def heatmap_data():
+    # 将 job_location 去掉 '·'，合并成单独的列，并统计数量，利用 from geopy.geocoders import Nominatim 获取经纬度，存储到数据库 heatmap_data
+    heatmap_df = all_city_zp_area_df['city'] + all_city_zp_area_df[
+        'district']  # + all_city_zp_area_df['street'] 只到区一级，加上街道会导致每个数据量太小
+    heatmap_df = heatmap_df.value_counts().reset_index()
+    heatmap_df.columns = ['location', 'count']
+    # 获取经纬度
+    geolocator = Nominatim(user_agent="heatmap_app")
+    heatmap_df['longitude'] = 0.0
+    heatmap_df['latitude'] = 0.0
+    # Specify the start and end indices
+    start_index = 0
+    end_index = 300
+
+    for index, row in heatmap_df.iloc[start_index:end_index].iterrows():
+        if (index - start_index) > 0 and (index - start_index) % 25 == 0:
+            time.sleep(15)
+        location = geolocator.geocode(row['location'])
+        print("current's index of row:", index)
+        if location is not None:
+            print(row['location'], location.longitude, location.latitude)
+            heatmap_df.loc[index, 'longitude'] = location.longitude
+            heatmap_df.loc[index, 'latitude'] = location.latitude
+            time.sleep(5)
+    return heatmap_df
 
 
 # 对“月薪”进行处理，如果是 10000-20000元/月 --> 最低 10000元/月 最高 20000元/月
@@ -210,12 +260,13 @@ if delete_null_data:
 if fill_null_data:
     clean_all_city_zp_df.fillna(value='无', inplace=True)
 
+sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
+                                                              db_charset)
+
 
 def export2mysql():
     try:
         # 将处理后的数据保存到 MySQL 数据库
-        sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
-                                                                      db_charset)
         engine = create_engine(sql_path)
         clean_all_city_zp_df.to_sql(db_ctable, con=engine, if_exists='replace')
 
@@ -256,6 +307,12 @@ def export2csv():
     # 导出为 csv 文件
     out_csv_path = 'output_data/clean_{}.csv'.format(db_otable)
     clean_all_city_zp_df.to_csv(out_csv_path, index=False, encoding=db_charset)
+
+    # 将 heatmap_df 保存到 csv 文件
+    if heatmap:
+        heatmap_df = heatmap_data()
+        heatmap_df.to_csv('output_data/heatmap_data.csv', index=False, encoding=db_charset)
+
     logging.info("Write to CSV Successfully!")
     print("Write to CSV Successfully!")
 
@@ -270,3 +327,15 @@ elif export_data == 'both':
 else:
     logging.error("export_data is not supported!")
     print("export_data is not supported!")
+
+if heatmap:
+    if export_data == 'mysql':
+        heatmap2mysql()
+    elif export_data == 'csv':
+        heatmap2csv()
+    elif export_data == 'both':
+        heatmap2mysql()
+        heatmap2csv()
+    else:
+        logging.error("export_data is not supported!")
+        print("export_data is not supported!")

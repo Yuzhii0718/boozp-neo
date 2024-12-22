@@ -1,136 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <title>BOSS直聘岗位分析可视化</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="icon" href="{{ url_for('static', filename = 'img/favicon.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename = 'css/mystyle.css') }}">
-    <script src="{{ url_for('static', filename = 'js/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'highcharts/highcharts.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'highcharts/highcharts-more.js') }}"></script>
-    <!-- <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script> -->
-    <script src="{{ url_for('static', filename = 'highcharts/oldie.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'highcharts/wordcloud.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'highcharts/dark-unica.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/welfare.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/region.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/province.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/industry.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/min_salary.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/sub_category.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/city.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/education.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/finance.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/top10order.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/field_order.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/fullscreen.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/read_config.js') }}"></script>
+    <link rel="icon"
+          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABNZJREFUWEe1l3tsVEUUxr9v7nZbSgUE5FFMQIS2bLHQBwgEGzVqBAmGtMVEEkWNqTEkvkspkKwh0C1p0IAkQvABaDRLIRqRIBpUiIqhNdiA3VJBiVGCFkEKpe3unSO33co+7r4A588753znd2fmnDlDxBkibmX6nHNB9QgFM0DcCiANggskTgikUSl8ceayY++oKa9ciqcVa46xJqTFc4cGtoJwUXBAFJuhpR2AgkK2aJlMcjqAAQA6AHlf6cA6ula2pQJiCyDH1typDbUbkE1K5DVOqjlrJyqN7kwMSp8jwkoR3geICeAtxa4VzHVbsAlHFIC0rBmmoQ4oQz/JnJrvEyoEDXpaa6c5hGsFuBtAu1KsZM7SXYn8owDM1rp6HdB70vKX7U/kHDkvAsJX+7gm1wPMAuUNldP1IukOJHUGpG19ujY7PUZe9QupBg+1F19droZ8BCCP4B4OGlLB7MpOO82wFfC3rrlL/NLhnLz8yPUAWL5yqvZm8zJ3E5gl4MG/A51zR0x+9WKkbhiAHF87DzlVnxKQ6wXohfhzY5ac6/hcBDNEsM+4dHIeSzb7Q7XDAXx1Jcxb2ngjgvdrSGv9cC2BQwBuB7HRyK1eEhvgZP1Yjn/51I0EsLR6jq6eajiM7wCmC8yFjryahv4Y4SvQ6BnMkup/bjSApWf6PFVXilZdb4oa2sWJNX9Z38MB3G5Ft1v/HwAibof2pf8I0gXKZiN3WWUUQKLA0lC0AVBj0dG+kE/82pXIPnI+0FJbRrIBgoAS5aKrqi3mXRBVZLxFE6B4PLhqC1jeZOV5SsO63HRrxs8AboNgkzGp+pnkAXYWr4BgVTDiVpY3LU4petDY3+JZrYga6wJT3cbo5AEaio8CyA/qnMWwm0bxnq9ilthYcHLcU6o1vu6tEyLlSQHIh4VT4FDh1ZG4l2VNX6a6CvKLe4juzjjX5ydvJgfQUFwLoDoi2HqWNz2XMoAIdWtdt9XYCHD4PwDxFt4CqrcBGRYtynwQgyK+X4DIsShbsguQ51n+Q7MdnNVD6KwBFwGxYreHAJTcDyX7Uv0jW3tyKcsa19oC/OQp1arvDEDgvwrghkJ+8XIQK3v7vmse8i46A0v4WLNtj6h9dV6BVATlL0Z3RN6S6VCyHUBOSgyGE9o5+CXjob3rYvmZPo91Zl4PmW+x7wk/KxiIDsc6gE9HlmvbZc0aCRkzDUgbECCwX4A9imiCUqcBnQFRBaZpLib5QIT/O3GzoK/0Muz6jASQzOGQ8VYbmFRChbkrwYPxAXYWH4RgdtytMNKg8+YDVCntGIlDzKmeFftdsKtgBHTaHwCMRMp6XCmQNTKR2dV58ryCOZO5Nb7YAN7Cp6DUlghVq526DITXBBk6AZJdmCzAaaX0gv6WPzbAjqKPQc4PUT0BYBH85hk4jO1gyNakZXTp3HkNAOcAsClkAMnzpuitDpFVoQ8d+yz4pDgT3bA6lsxgwdgGZ8YSPvxNR2/98FYYUCeXX2l0rJrh6INkEcqqmnuOtuUbTsNFyGgInEKcFT99jvTfD3PiBqsEhw17AO/MoVA9v1ntHMBnWd74gW367Zg6CzTeAzAOYs5mxZFvk92Hfrs4Z2DKGAQc3Xy0Ke4bT7YVDIShsrnoSEqP0oQAqf7Jtdr/C/g2xhww+h5pAAAAAElFTkSuQmCC"/>
+    <link color="#222" href="/images/logo.svg" rel="mask-icon">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
-<div class="index">
-    <div class="title">
-        <p>BOSS直聘 互联网/AI 岗位分析可视化 <span id="version"></span></p>
-    </div>
-    <div id="config-info">
-        {#<p>作者: <span id="author"></span></p>#}
-        <p>数据日期: <span id="get_time"></span></p>
-    </div>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-    <div class="paint_area">
-
-        <div class="data_frame_inline">
-            {#企业类型#}
-            <div class="data_frame_single fullscreen_able" id="tab1">
-                <div id="industry"></div>
-            </div>
-            {#学历#}
-            <div class="data_frame_single fullscreen_able" id="tab2">
-                <div id="education"><p class="chart-title">学历占比</p></div>
-            </div>
-        </div>
-
-        <div class="data_frame_inline">
-            {#城市岗位分布#}
-            <div class="data_frame_single fullscreen_able" id="tab3">
-                <div id="city"></div>
-            </div>
-            {#企业福利#}
-            <div class="data_frame_single fullscreen_able" id="tab4">
-                <div id="welfare"></div>
-            </div>
-        </div>
-
-        <div class="data_frame_inline">
-            {#企业招聘Top 10#}
-            <div class="data_frame_single fullscreen_able" id="tab5">
-                <div id="top10order">
-                    <p class="chart-title">企业招聘Top</p>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>排名</th>
-                            <th>公司名称</th>
-                            <th>岗位数量</th>
-                        </tr>
-                        </thead>
-                        <tbody id="J_TbData"></tbody>
-                    </table>
-                </div>
-            </div>
-            {#省份岗位分布#}
-            <div class="data_frame_single fullscreen_able" id="tab6">
-                <div id="province"></div>
-            </div>
-            {#区域岗位数量#}
-            <div class="data_frame_single fullscreen_able" id="tab7">
-                <div id="region"></div>
-            </div>
-        </div>
-
-        <div class="data_frame_inline">
-            {#开发方向分布#}
-            <div class="data_frame_single fullscreen_able" id="tab8">
-                <div id="sub_category"></div>
-            </div>
-            {#领域Top#}
-            <div class="data_frame_single fullscreen_able" id="tab9">
-                <div id="field_order">
-                    <p class="chart-title">领域Top</p>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>排名</th>
-                            <th>领域</th>
-                            <th>岗位数量</th>
-                        </tr>
-                        </thead>
-                        <tbody id="J_TbData_field"></tbody>
-                    </table>
-                    <br>
-                </div>
-            </div>
-        </div>
-
-        <div class="data_frame_inline">
-            {#企业金融#}
-            <div class="data_frame_single fullscreen_able" id="tab10">
-                <div id="finance"><p class="chart-title">金融占比</p></div>
-            </div>
-            {#最低薪资分布#}
-            <div class="data_frame_single fullscreen_able" id="tab11">
-                <div id="min_salary"></div>
-            </div>
-        </div>
-
-    </div>
-</div>
+<div class="container">
+    <h2>欢迎!</h2>
+    <button class="button" onclick="location.href='./dashboard'">仪表盘</button>
+    <button class="button" onclick="location.href='./heatmap'">热力图</button>
 </div>
 </body>
 </html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="icon"
+          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABNZJREFUWEe1l3tsVEUUxr9v7nZbSgUE5FFMQIS2bLHQBwgEGzVqBAmGtMVEEkWNqTEkvkspkKwh0C1p0IAkQvABaDRLIRqRIBpUiIqhNdiA3VJBiVGCFkEKpe3unSO33co+7r4A588753znd2fmnDlDxBkibmX6nHNB9QgFM0DcCiANggskTgikUSl8ceayY++oKa9ciqcVa46xJqTFc4cGtoJwUXBAFJuhpR2AgkK2aJlMcjqAAQA6AHlf6cA6ula2pQJiCyDH1typDbUbkE1K5DVOqjlrJyqN7kwMSp8jwkoR3geICeAtxa4VzHVbsAlHFIC0rBmmoQ4oQz/JnJrvEyoEDXpaa6c5hGsFuBtAu1KsZM7SXYn8owDM1rp6HdB70vKX7U/kHDkvAsJX+7gm1wPMAuUNldP1IukOJHUGpG19ujY7PUZe9QupBg+1F19droZ8BCCP4B4OGlLB7MpOO82wFfC3rrlL/NLhnLz8yPUAWL5yqvZm8zJ3E5gl4MG/A51zR0x+9WKkbhiAHF87DzlVnxKQ6wXohfhzY5ac6/hcBDNEsM+4dHIeSzb7Q7XDAXx1Jcxb2ngjgvdrSGv9cC2BQwBuB7HRyK1eEhvgZP1Yjn/51I0EsLR6jq6eajiM7wCmC8yFjryahv4Y4SvQ6BnMkup/bjSApWf6PFVXilZdb4oa2sWJNX9Z38MB3G5Ft1v/HwAibof2pf8I0gXKZiN3WWUUQKLA0lC0AVBj0dG+kE/82pXIPnI+0FJbRrIBgoAS5aKrqi3mXRBVZLxFE6B4PLhqC1jeZOV5SsO63HRrxs8AboNgkzGp+pnkAXYWr4BgVTDiVpY3LU4petDY3+JZrYga6wJT3cbo5AEaio8CyA/qnMWwm0bxnq9ilthYcHLcU6o1vu6tEyLlSQHIh4VT4FDh1ZG4l2VNX6a6CvKLe4juzjjX5ydvJgfQUFwLoDoi2HqWNz2XMoAIdWtdt9XYCHD4PwDxFt4CqrcBGRYtynwQgyK+X4DIsShbsguQ51n+Q7MdnNVD6KwBFwGxYreHAJTcDyX7Uv0jW3tyKcsa19oC/OQp1arvDEDgvwrghkJ+8XIQK3v7vmse8i46A0v4WLNtj6h9dV6BVATlL0Z3RN6S6VCyHUBOSgyGE9o5+CXjob3rYvmZPo91Zl4PmW+x7wk/KxiIDsc6gE9HlmvbZc0aCRkzDUgbECCwX4A9imiCUqcBnQFRBaZpLib5QIT/O3GzoK/0Muz6jASQzOGQ8VYbmFRChbkrwYPxAXYWH4RgdtytMNKg8+YDVCntGIlDzKmeFftdsKtgBHTaHwCMRMp6XCmQNTKR2dV58ryCOZO5Nb7YAN7Cp6DUlghVq526DITXBBk6AZJdmCzAaaX0gv6WPzbAjqKPQc4PUT0BYBH85hk4jO1gyNakZXTp3HkNAOcAsClkAMnzpuitDpFVoQ8d+yz4pDgT3bA6lsxgwdgGZ8YSPvxNR2/98FYYUCeXX2l0rJrh6INkEcqqmnuOtuUbTsNFyGgInEKcFT99jvTfD3PiBqsEhw17AO/MoVA9v1ntHMBnWd74gW367Zg6CzTeAzAOYs5mxZFvk92Hfrs4Z2DKGAQc3Xy0Ke4bT7YVDIShsrnoSEqP0oQAqf7Jtdr/C/g2xhww+h5pAAAAAElFTkSuQmCC"/>
+    <link color="#222" href="/images/logo.svg" rel="mask-icon">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=c0GWGQk0lHRytmaSMVyMbtVHMgQkFQCB"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script src="{{ url_for('static', filename = 'js/heatmap.js') }}"></script>
+    <title>热力图功能示例</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "华文中宋", sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .night-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="custom-control custom-switch position-fixed" style="top: 10px; right: 10px;">
+    <input type="checkbox" class="custom-control-input" id="night-mode-toggle">
+    <label class="custom-control-label" for="night-mode-toggle" title="开/关夜间模式">🌗</label>
+</div>
+<div class="custom-control custom-switch position-fixed" style="top: 10px; left: 10px;">
+    <label id="info-icon" title="关于">ℹ️</label>
+    <div id="info-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <span class="rounded mr-2">❤️</span>
+            <strong class="mr-auto">关于</strong>
+            <small>热力图</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body" style="background-color: #f8f9fa;">
+            🖊：Yuzhii<br>
+        </div>
+    </div>
+</div>
+<div class="container mt-4 d-flex flex-column align-items-center justify-content-center position-relative"
+     style="height: 100vh;">
+    <h2 class="text-center">热力图功能示例</h2>
+    <p></p>
+    <div id="map" class="mb-4"></div>
+    <div id="r-result" class="text-center">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="heatmap-toggle" onclick="toggleHeatmap();">
+            <label class="custom-control-label" for="heatmap-toggle">热力图</label>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('info-icon').addEventListener('click', function () {
+        $('#info-toast').toast('show');
+    });
+
+    $(document).ready(function () {
+        $('.toast').toast({autohide: false});
+    });
+
+    document.getElementById('night-mode-toggle').addEventListener('click', function () {
+        document.body.classList.toggle('night-mode');
+    });
+
+    function toggleHeatmap() {
+        var checkbox = document.getElementById('heatmap-toggle');
+        if (checkbox.checked) {
+            heatmapOverlay.show();
+        } else {
+            heatmapOverlay.hide();
+        }
+    }
+</script>
+<script type="text/javascript">
+    var map = new BMap.Map("map");          // 创建地图实例
+
+    var point = new BMap.Point(116.418261, 39.921984);
+    map.centerAndZoom(point, 8);             // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(); // 允许滚轮缩放
+
+    //设置地图显示比例尺
+    var top_right_navigation = new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_RIGHT,
+        type: BMAP_NAVIGATION_CONTROL_SMALL
+    }); //右上角，仅包含平移和缩放按钮
+
+    //添加控件和比例尺
+    function add_control() {
+        map.addControl(top_right_navigation);
+    }
+
+    add_control()
+
+    {#console.log(points);#}
+
+    if (!isSupportCanvas()) {
+        alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+    }
+
+    {#var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 20, "visible": true, "opacity": 10});#}
+    var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 20});
+    map.addOverlay(heatmapOverlay);
+
+    // 监听自定义事件以获取 points 数据
+    document.addEventListener('heatmapDataReady', function (event) {
+        var points = event.detail;
+        heatmapOverlay.setDataSet({data: points, max: 1000});
+    });
+
+    function openHeatmap() {
+        heatmapOverlay.show();
+    }
+
+    function closeHeatmap() {
+        heatmapOverlay.hide();
+    }
+
+    function setGradient() {
+        var gradient = {};
+        var colors = document.querySelectorAll("input[type='color']");
+        colors = [].slice.call(colors, 0);
+        colors.forEach(function (ele) {
+            gradient[ele.getAttribute("data-key")] = ele.value;
+        });
+        heatmapOverlay.setOptions({"gradient": gradient});
+    }
+
+    function isSupportCanvas() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+    closeHeatmap(); // Ensure heatmap is initially turned off
+</script>
+</body>
+</html>

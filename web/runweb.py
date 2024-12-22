@@ -79,6 +79,46 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/dashboard')
+def dashboard():
+    """
+    首页
+    :return: dashboard.html 跳转到仪表盘
+    """
+    return render_template('dashboard.html')
+
+
+@app.route('/heatmap')
+def heatmap():
+    """
+    heatmap
+    :return: heatmap.html 跳转
+    """
+    return render_template('heatmap.html')
+
+
+@app.route('/get_heatmap')
+def get_heatmap():
+    """
+    获取热力图数据
+    :keyword: 热力图
+    :return:
+    """
+    # 从 heatmap_data 表中获取数据 location,count,longitude,latitude
+    sql_str = "SELECT count,longitude as lng,latitude as lat FROM heatmap_data"
+    db_conn = get_db_conn()
+    results = db_conn.get_all(sql_str)
+    # 去除结果中 “\r\n” 字符
+    results = list(map(lambda x: (x[0], x[1].replace('\r\n', ''), x[2].replace('\r\n', '')), results))
+    # 对结果进行处理，count 的值放大10倍
+    results = list(map(lambda x: (x[0] * 100, x[1], x[2]), results))
+    # 转换为json
+    data = []
+    for r in results:
+        data.append({'count': r[0], 'lng': r[1], 'lat': r[2]})
+    return msg(200, data)
+
+
 @app.route('/get_word_cloud')
 def get_word_cloud():
     """
