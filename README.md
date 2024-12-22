@@ -2,9 +2,11 @@
 
 使用 python+selenium 完成对 boss 互联网相关岗位的数据爬取以及数据清洗，
 
-并分析数据，生成图表仪表盘，显示于 web 页面。
+并分析数据，生成图表仪表盘，显示于 web 页面。以及热力图。
 
 在线演示：[BOSS直聘 互联网/AI 岗位分析可视化](https://yuzhii0718.eu.org/boozp-neo/)
+
+数据分析建议：[数据分析建议](advices.md)
 
 ## Usage
 
