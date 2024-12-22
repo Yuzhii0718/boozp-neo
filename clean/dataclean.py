@@ -35,10 +35,8 @@ export_data = cleaner['export_data']
 # skip_first_line 值为 True 时，删除 csv 文件的第一行
 skip_first_line = cleaner.get('skip_first_line', False)
 print("skip_first_line:", skip_first_line)
-delete_null_data = cleaner.get('delete_null_data', False)
-print("delete_null_data:", delete_null_data)
-fill_null_data = cleaner.get('fill_null_data', False)
-print("fill_null_data:", fill_null_data)
+null_value = cleaner.get('null_value', 'fill')
+print("clean_method:", null_value)
 heatmap = cleaner.get('heatmap', False)
 print("heatmap:", heatmap)
 
@@ -250,15 +248,17 @@ clean_all_city_zp_df.drop('community', axis=1, inplace=True)  # 删除原社区(
 clean_all_city_zp_df['get_time'] = normal_time
 
 # 对缺失值所在行进行清洗。
-if delete_null_data:
+if null_value == 'delete':
     clean_all_city_zp_df.dropna(axis=0, how='any', inplace=True)
     clean_all_city_zp_df.drop(axis=0,
                               index=clean_all_city_zp_df.loc[(clean_all_city_zp_df['job_welfare'] == 'None')].index,
                               inplace=True)
-
 # 对缺失值所在行进行填充。
-if fill_null_data:
+elif null_value == 'fill':
     clean_all_city_zp_df.fillna(value='无', inplace=True)
+else:
+    logging.error("clean_method is not supported!")
+    print("clean_method is not supported!")
 
 sql_path = "mysql+pymysql://{}:{}@{}:{}/{}?charset={}".format(db_user, db_password, db_host, db_port, db_name,
                                                               db_charset)
