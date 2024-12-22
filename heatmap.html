@@ -69,6 +69,13 @@
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <div id="r-result" class="text-center">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="heatmap-toggle"
+                            onclick="toggleHeatmap();">
+                        <label class="custom-control-label" for="heatmap-toggle">热力图</label>
+                    </div>
+                </div>
             </div>
             <div class="toast-body" style="background-color: #f8f9fa;">
                 🖊：Yuzhii<br>
@@ -78,14 +85,14 @@
     <div class="container mt-4 d-flex flex-column align-items-center justify-content-center position-relative"
         style="height: 100vh;">
         <h2 class="text-center">热力图功能示例</h2>
-        <p></p>
-        <div id="map" class="mb-4"></div>
         <div id="r-result" class="text-center">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="heatmap-toggle" onclick="toggleHeatmap();">
                 <label class="custom-control-label" for="heatmap-toggle">热力图</label>
             </div>
         </div>
+        <br>
+        <div id="map" class="mb-4"></div>
     </div>
     <script>
         document.getElementById('info-icon').addEventListener('click', function () {
