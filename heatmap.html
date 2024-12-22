@@ -95,19 +95,6 @@
         $(document).ready(function () {
             $('.toast').toast({ autohide: false });
         });
-    </script>
-    <script type="text/javascript">
-        function toggleHeatmap() {
-            var checkbox = document.getElementById('heatmap-toggle');
-            if (checkbox.checked) {
-                heatmapOverlay.show();
-            } else {
-                heatmapOverlay.hide();
-            }
-        }
-
-        // Initialize the heatmap as hidden
-        closeHeatmap();
 
         document.getElementById('night-mode-toggle').addEventListener('click', function () {
             document.body.classList.toggle('night-mode');
@@ -1134,6 +1121,19 @@
             var elem = document.createElement('canvas');
             return !!(elem.getContext && elem.getContext('2d'));
         }
+    </script>
+    <script>
+        function toggleHeatmap() {
+            var checkbox = document.getElementById('heatmap-toggle');
+            if (checkbox.checked) {
+                heatmapOverlay.show();
+            } else {
+                heatmapOverlay.hide();
+            }
+        }
+
+        // Initialize the heatmap as hidden
+        closeHeatmap();
     </script>
 </body>
 
