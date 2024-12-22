@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -16,7 +17,8 @@
     <script src="{{ url_for('static', filename = 'js/heatmap.js') }}"></script>
     <title>热力图功能示例</title>
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -50,6 +52,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="custom-control custom-switch position-fixed" style="top: 10px; right: 10px;">
@@ -75,13 +78,13 @@
 <div class="container mt-4 d-flex flex-column align-items-center justify-content-center position-relative"
      style="height: 100vh;">
     <h2 class="text-center">热力图功能示例</h2>
-    <p></p>
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="heatmap-toggle" onclick="toggleHeatmap();">
+        <label class="custom-control-label" for="heatmap-toggle">热力图</label>
+    </div>
+    <br>
     <div id="map" class="mb-4"></div>
     <div id="r-result" class="text-center">
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="heatmap-toggle" onclick="toggleHeatmap();">
-            <label class="custom-control-label" for="heatmap-toggle">热力图</label>
-        </div>
     </div>
 </div>
 <script>
@@ -96,15 +99,6 @@
     document.getElementById('night-mode-toggle').addEventListener('click', function () {
         document.body.classList.toggle('night-mode');
     });
-
-    function toggleHeatmap() {
-        var checkbox = document.getElementById('heatmap-toggle');
-        if (checkbox.checked) {
-            heatmapOverlay.show();
-        } else {
-            heatmapOverlay.hide();
-        }
-    }
 </script>
 <script type="text/javascript">
     var map = new BMap.Map("map");          // 创建地图实例
@@ -126,13 +120,10 @@
 
     add_control()
 
-    {#console.log(points);#}
-
     if (!isSupportCanvas()) {
         alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
     }
 
-    {#var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 20, "visible": true, "opacity": 10});#}
     var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius": 20});
     map.addOverlay(heatmapOverlay);
 
@@ -165,7 +156,17 @@
         return !!(elem.getContext && elem.getContext('2d'));
     }
 
+    function toggleHeatmap() {
+        var checkbox = document.getElementById('heatmap-toggle');
+        if (checkbox.checked) {
+            heatmapOverlay.show();
+        } else {
+            heatmapOverlay.hide();
+        }
+    }
+
     closeHeatmap(); // Ensure heatmap is initially turned off
 </script>
 </body>
+
 </html>
