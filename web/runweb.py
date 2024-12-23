@@ -289,6 +289,17 @@ def get_json():
         normal_data = config.get('normal', {})
     return msg(200, normal_data)
 
+@app.route("/get_all_num")
+def get_all_num():
+    """
+    获取所有岗位数量
+    :return:
+    """
+    sql_str = "SELECT COUNT(1) FROM {}".format(db_ctable)
+    db_conn = get_db_conn()
+    results = db_conn.get_one(sql_str)
+    return msg(200, results)
+
 
 if __name__ == '__main__':
     app.run(web_host, web_port, debug=True)
