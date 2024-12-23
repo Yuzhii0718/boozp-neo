@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <link rel="icon"
-        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABNZJREFUWEe1l3tsVEUUxr9v7nZbSgUE5FFMQIS2bLHQBwgEGzVqBAmGtMVEEkWNqTEkvkspkKwh0C1p0IAkQvABaDRLIRqRIBpUiIqhNdiA3VJBiVGCFkEKpe3unSO33co+7r4A588753znd2fmnDlDxBkibmX6nHNB9QgFM0DcCiANggskTgikUSl8ceayY++oKa9ciqcVa46xJqTFc4cGtoJwUXBAFJuhpR2AgkK2aJlMcjqAAQA6AHlf6cA6ula2pQJiCyDH1typDbUbkE1K5DVOqjlrJyqN7kwMSp8jwkoR3geICeAtxa4VzHVbsAlHFIC0rBmmoQ4oQz/JnJrvEyoEDXpaa6c5hGsFuBtAu1KsZM7SXYn8owDM1rp6HdB70vKX7U/kHDkvAsJX+7gm1wPMAuUNldP1IukOJHUGpG19ujY7PUZe9QupBg+1F19droZ8BCCP4B4OGlLB7MpOO82wFfC3rrlL/NLhnLz8yPUAWL5yqvZm8zJ3E5gl4MG/A51zR0x+9WKkbhiAHF87DzlVnxKQ6wXohfhzY5ac6/hcBDNEsM+4dHIeSzb7Q7XDAXx1Jcxb2ngjgvdrSGv9cC2BQwBuB7HRyK1eEhvgZP1Yjn/51I0EsLR6jq6eajiM7wCmC8yFjryahv4Y4SvQ6BnMkup/bjSApWf6PFVXilZdb4oa2sWJNX9Z38MB3G5Ft1v/HwAibof2pf8I0gXKZiN3WWUUQKLA0lC0AVBj0dG+kE/82pXIPnI+0FJbRrIBgoAS5aKrqi3mXRBVZLxFE6B4PLhqC1jeZOV5SsO63HRrxs8AboNgkzGp+pnkAXYWr4BgVTDiVpY3LU4petDY3+JZrYga6wJT3cbo5AEaio8CyA/qnMWwm0bxnq9ilthYcHLcU6o1vu6tEyLlSQHIh4VT4FDh1ZG4l2VNX6a6CvKLe4juzjjX5ydvJgfQUFwLoDoi2HqWNz2XMoAIdWtdt9XYCHD4PwDxFt4CqrcBGRYtynwQgyK+X4DIsShbsguQ51n+Q7MdnNVD6KwBFwGxYreHAJTcDyX7Uv0jW3tyKcsa19oC/OQp1arvDEDgvwrghkJ+8XIQK3v7vmse8i46A0v4WLNtj6h9dV6BVATlL0Z3RN6S6VCyHUBOSgyGE9o5+CXjob3rYvmZPo91Zl4PmW+x7wk/KxiIDsc6gE9HlmvbZc0aCRkzDUgbECCwX4A9imiCUqcBnQFRBaZpLib5QIT/O3GzoK/0Muz6jASQzOGQ8VYbmFRChbkrwYPxAXYWH4RgdtytMNKg8+YDVCntGIlDzKmeFftdsKtgBHTaHwCMRMp6XCmQNTKR2dV58ryCOZO5Nb7YAN7Cp6DUlghVq526DITXBBk6AZJdmCzAaaX0gv6WPzbAjqKPQc4PUT0BYBH85hk4jO1gyNakZXTp3HkNAOcAsClkAMnzpuitDpFVoQ8d+yz4pDgT3bA6lsxgwdgGZ8YSPvxNR2/98FYYUCeXX2l0rJrh6INkEcqqmnuOtuUbTsNFyGgInEKcFT99jvTfD3PiBqsEhw17AO/MoVA9v1ntHMBnWd74gW367Zg6CzTeAzAOYs5mxZFvk92Hfrs4Z2DKGAQc3Xy0Ke4bT7YVDIShsrnoSEqP0oQAqf7Jtdr/C/g2xhww+h5pAAAAAElFTkSuQmCC" />
-
+          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABNZJREFUWEe1l3tsVEUUxr9v7nZbSgUE5FFMQIS2bLHQBwgEGzVqBAmGtMVEEkWNqTEkvkspkKwh0C1p0IAkQvABaDRLIRqRIBpUiIqhNdiA3VJBiVGCFkEKpe3unSO33co+7r4A588753znd2fmnDlDxBkibmX6nHNB9QgFM0DcCiANggskTgikUSl8ceayY++oKa9ciqcVa46xJqTFc4cGtoJwUXBAFJuhpR2AgkK2aJlMcjqAAQA6AHlf6cA6ula2pQJiCyDH1typDbUbkE1K5DVOqjlrJyqN7kwMSp8jwkoR3geICeAtxa4VzHVbsAlHFIC0rBmmoQ4oQz/JnJrvEyoEDXpaa6c5hGsFuBtAu1KsZM7SXYn8owDM1rp6HdB70vKX7U/kHDkvAsJX+7gm1wPMAuUNldP1IukOJHUGpG19ujY7PUZe9QupBg+1F19droZ8BCCP4B4OGlLB7MpOO82wFfC3rrlL/NLhnLz8yPUAWL5yqvZm8zJ3E5gl4MG/A51zR0x+9WKkbhiAHF87DzlVnxKQ6wXohfhzY5ac6/hcBDNEsM+4dHIeSzb7Q7XDAXx1Jcxb2ngjgvdrSGv9cC2BQwBuB7HRyK1eEhvgZP1Yjn/51I0EsLR6jq6eajiM7wCmC8yFjryahv4Y4SvQ6BnMkup/bjSApWf6PFVXilZdb4oa2sWJNX9Z38MB3G5Ft1v/HwAibof2pf8I0gXKZiN3WWUUQKLA0lC0AVBj0dG+kE/82pXIPnI+0FJbRrIBgoAS5aKrqi3mXRBVZLxFE6B4PLhqC1jeZOV5SsO63HRrxs8AboNgkzGp+pnkAXYWr4BgVTDiVpY3LU4petDY3+JZrYga6wJT3cbo5AEaio8CyA/qnMWwm0bxnq9ilthYcHLcU6o1vu6tEyLlSQHIh4VT4FDh1ZG4l2VNX6a6CvKLe4juzjjX5ydvJgfQUFwLoDoi2HqWNz2XMoAIdWtdt9XYCHD4PwDxFt4CqrcBGRYtynwQgyK+X4DIsShbsguQ51n+Q7MdnNVD6KwBFwGxYreHAJTcDyX7Uv0jW3tyKcsa19oC/OQp1arvDEDgvwrghkJ+8XIQK3v7vmse8i46A0v4WLNtj6h9dV6BVATlL0Z3RN6S6VCyHUBOSgyGE9o5+CXjob3rYvmZPo91Zl4PmW+x7wk/KxiIDsc6gE9HlmvbZc0aCRkzDUgbECCwX4A9imiCUqcBnQFRBaZpLib5QIT/O3GzoK/0Muz6jASQzOGQ8VYbmFRChbkrwYPxAXYWH4RgdtytMNKg8+YDVCntGIlDzKmeFftdsKtgBHTaHwCMRMp6XCmQNTKR2dV58ryCOZO5Nb7YAN7Cp6DUlghVq526DITXBBk6AZJdmCzAaaX0gv6WPzbAjqKPQc4PUT0BYBH85hk4jO1gyNakZXTp3HkNAOcAsClkAMnzpuitDpFVoQ8d+yz4pDgT3bA6lsxgwdgGZ8YSPvxNR2/98FYYUCeXX2l0rJrh6INkEcqqmnuOtuUbTsNFyGgInEKcFT99jvTfD3PiBqsEhw17AO/MoVA9v1ntHMBnWd74gW367Zg6CzTeAzAOYs5mxZFvk92Hfrs4Z2DKGAQc3Xy0Ke4bT7YVDIShsrnoSEqP0oQAqf7Jtdr/C/g2xhww+h5pAAAAAElFTkSuQmCC"/>
     <link color="#222" href="/images/logo.svg" rel="mask-icon">
     <title>Welcome</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-            overflow: hidden;
+            margin: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         h2 {
             color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 2em;
         }
 
         .button {
@@ -33,22 +41,21 @@
             border-radius: 12px;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        @media (max-width: 320px) {
+            .container {
+                width: 100%;
+                padding: 0 20px;
+                scale: 2;
+            }
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <h2>欢迎!</h2>
-        <button class="button" onclick="location.href='./dashboard.html'">仪表盘</button>
-        <button class="button" onclick="location.href='./heatmap.html'">热力图</button>
-    </div>
+<div class="container">
+    <h2>欢迎!</h2>
+    <hr style="width: 100%; border: 1px solid #333;">
+    <button class="button" onclick="location.href='./dashboard.html'">仪表盘</button>
+    <button class="button" onclick="location.href='./heatmap.html'">热力图</button>
+</div>
 </body>
-
 </html>

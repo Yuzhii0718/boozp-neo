@@ -1,18 +1,12 @@
-$(document).ready(function () {
-    $.ajax({
-        url: '/get_job_num',
-        type: 'GET',
-        datatype: 'json',
-        success: function (data) {
-            var obj2 = JSON.parse(data);
-            if (obj2.status == 201){
-                this.error(xhr=obj2)
-                return
-            }
-            var d = new Date(),str = '';
+let city = {"status": 200, "data": [["杭州", 250], ["南京", 108], ["上海", 419], ["惠州", 29], ["海口", 17], ["广州", 168], ["合肥", 80], ["成都", 154], ["深圳", 439], ["北京", 648], ["西安", 149], ["长沙", 94], ["武汉", 171], ["苏州", 86], ["厦门", 54], ["昆明", 21], ["东莞", 73], ["南昌", 28], ["石家庄", 24], ["重庆", 50], ["大连", 36], ["郑州", 77], ["烟台", 17], ["无锡", 44], ["宁波", 39], ["佛山", 29], ["天津", 34], ["青岛", 46], ["常州", 19], ["中山", 19], ["温州", 17], ["嘉兴", 17], ["济南", 45], ["珠海", 38], ["福州", 33], ["太原", 28], ["南宁", 16], ["沈阳", 20], ["芜湖", 17]]};
+
+$(function () {
+    let obj = city;
+
+    let d = new Date(), str = '';
             str += d.getFullYear() + '年'; //获取当前年份
-				str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
-            var chart = Highcharts.chart('city', {
+            str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
+            let chart = Highcharts.chart('city', {
                 chart: {
                     type: 'column',
                     backgroundColor: 'rgba(0,0,0,0)'
@@ -44,7 +38,7 @@ $(document).ready(function () {
                 },
                 series: [{
                     name: '总岗位数',
-                    data: obj2.data,
+                    data: obj.data,
                     dataLabels: {
                         enabled: true,
                         rotation: -90,
@@ -55,9 +49,5 @@ $(document).ready(function () {
                     }
                 }]
             });
-        },
-        error: function (xhr, type, errorThrown) {
-            console.log(xhr);
-        }
-    });
+
 });

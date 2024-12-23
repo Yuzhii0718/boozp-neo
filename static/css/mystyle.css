@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #141541;
+    background: url("../img/bg.png") repeat;
     background-size: cover;
     font-family: "Microsoft Yahei", sans-serif;
     color: #fff;
@@ -52,10 +52,7 @@ body {
     margin-bottom: 10px;
 }
 
-#industry,
-#education,
-#city,
-#welfare {
+#industry, #education, #city, #welfare {
     width: 100%;
     height: 450px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -63,9 +60,7 @@ body {
     padding: 20px;
 }
 
-#province,
-#region,
-#top10order {
+#province, #region, #top10order {
     width: 100%;
     height: 550px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -73,8 +68,7 @@ body {
     padding: 20px;
 }
 
-#sub_category,
-#field_order {
+#sub_category, #field_order {
     width: 100%;
     height: 500px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -82,8 +76,7 @@ body {
     padding: 20px;
 }
 
-#finance,
-#min_salary {
+#finance, #min_salary {
     width: 100%;
     height: 400px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -97,8 +90,7 @@ table {
     margin-top: 10px;
 }
 
-th,
-td {
+th, td {
     padding: 10px;
     border: 1px solid #fff;
     text-align: center;
