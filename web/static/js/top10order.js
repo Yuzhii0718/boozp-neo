@@ -5,17 +5,17 @@ $(document).ready(function () {
         datatype: 'json',
         timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
-            var obj = JSON.parse(data);
+            let obj = JSON.parse(data);
             if (obj.status == 201){
                 this.error(xhr=obj);
                 return
             }
             $(function () {
-                // var obj1 = JSON.parse(data);
+                // let obj1 = JSON.parse(data);
                 $("#J_TbData").empty();
-                for (var i = 0; i < obj.data.length; i++) {
+                for (let i = 0; i < obj.data.length; i++) {
                     //动态创建一个tr行标签,并且转换成jQuery对象
-                    var $trTemp = $("<tr></tr>");
+                    let $trTemp = $("<tr></tr>");
                     //往行里面追加 td单元格
                     $trTemp.append("<td class='top10order'>" + obj.data[i].id + "</td>");
                     $trTemp.append("<td class='top10order'>" + obj.data[i].name + "</td>");

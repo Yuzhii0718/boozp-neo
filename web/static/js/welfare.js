@@ -5,14 +5,14 @@ $(document).ready(function () {
         // data: "name=John&location=Boston",
         timeout: 5000,//超时时间设置为5秒；
         success: function (msg) {
-            var obj1 = JSON.parse(msg)
-            if (obj1.status == 201) {
-                this.erro(xhr = obj1)
+            let obj = JSON.parse(msg)
+            if (obj.status == 201) {
+                this.erro(xhr = let)
                 return
             }
-            var data = obj1.data.split(/[,\. ]+/g)
+            let data = obj.data.split(/[,\. ]+/g)
                 .reduce(function (arr, word) {
-                    var obj = arr.find(function (obj) {
+                    let obj = arr.find(function (obj) {
                         return obj.name === word;
                     });
                     if (obj) {
@@ -39,7 +39,7 @@ $(document).ready(function () {
                 }
             });
         },
-        erro: function (xhr, type, errorThrown) {
+        error: function (xhr, type, errorThrown) {
             // alert(xhr.data)
             console.log('Ajax error!' + xhr.data);
         }

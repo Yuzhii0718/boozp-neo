@@ -6,15 +6,15 @@ $(document).ready(function () {
         timeout: 5000,//超时时间设置为5秒；
 
         success: function (data) {
-            var obj2 = JSON.parse(data);
-            if (obj2.status == 201) {
-                this.error(xhr = obj2)
+            let obj = JSON.parse(data);
+            if (obj.status == 201) {
+                this.error(xhr = obj)
                 return
             }
-            var d = new Date(), str = '';
+            let d = new Date(), str = '';
             str += d.getFullYear() + '年'; //获取当前年份
             str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
-            var chart = Highcharts.chart('city', {
+            let chart = Highcharts.chart('city', {
                 chart: {
                     type: 'column',
                     backgroundColor: 'rgba(0,0,0,0)'
@@ -46,7 +46,7 @@ $(document).ready(function () {
                 },
                 series: [{
                     name: '总岗位数',
-                    data: obj2.data,
+                    data: obj.data,
                     dataLabels: {
                         enabled: true,
                         rotation: -90,

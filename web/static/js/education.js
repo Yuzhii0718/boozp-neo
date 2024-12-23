@@ -5,15 +5,15 @@ $(document).ready(function () {
         datatype: 'json',
         timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
-            var obj3 = JSON.parse(data);
-            if (obj3.status == 201) {
-                this.error(xhr = obj3);
+            let obj = JSON.parse(data);
+            if (obj.status == 201) {
+                this.error(xhr = obj);
             }
 
-            var processedData = [];
-            var othersPercentage = 0;
+            let processedData = [];
+            let othersPercentage = 0;
 
-            obj3.data.forEach(function (item) {
+            obj.data.forEach(function (item) {
                 if (item[1] < 1) {
                     othersPercentage += item[1];
                 } else {
@@ -25,7 +25,7 @@ $(document).ready(function () {
                 processedData.push(['Others', othersPercentage]);
             }
 
-            var chart = Highcharts.chart('education', {
+            let chart = Highcharts.chart('education', {
                 chart: {
                     backgroundColor: 'rgba(0,0,0,0)'
                 },

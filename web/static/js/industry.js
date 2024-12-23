@@ -5,7 +5,7 @@ $(document).ready(function () {
         type: 'GET',//HTTP请求类型
         timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
-            // var obj2 = JSON.parse(data)
+            // let obj = JSON.parse(data)
             if (data.status == 201){
                 this.error(xhr=data)
                 return

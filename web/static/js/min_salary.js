@@ -5,21 +5,21 @@ $(document).ready(function () {
         datatype: 'json',
         timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
-            var obj2 = JSON.parse(data);
-            if (obj2.status == 201){
-                this.error(xhr=obj2)
+            let obj = JSON.parse(data);
+            if (obj.status == 201){
+                this.error(xhr=obj)
                 return
             }
-            var d = new Date(),str = '';
+            let d = new Date(),str = '';
             str += d.getFullYear() + '年'; //获取当前年份
             str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
 
             // Filter out None values
-            var filteredData = obj2.data.filter(function(item) {
+            let filteredData = obj.data.filter(function(item) {
                 return item !== null;
             });
 
-            var chart = Highcharts.chart('min_salary', {
+            let chart = Highcharts.chart('min_salary', {
                 chart: {
                     type: 'column',
                     backgroundColor: 'rgba(0,0,0,0)'
@@ -72,21 +72,21 @@ $(document).ready(function () {
         type: 'GET',
         datatype: 'json',
         success: function (data) {
-            var obj2 = JSON.parse(data);
-            if (obj2.status == 201){
-                this.error(xhr=obj2)
+            let obj = JSON.parse(data);
+            if (obj.status == 201){
+                this.error(xhr=obj)
                 return
             }
-            var d = new Date(),str = '';
+            let d = new Date(),str = '';
             str += d.getFullYear() + '年'; //获取当前年份
             str += d.getMonth() + 1 + '月'; //获取当前月份（0——11）
 
             // Filter out None values
-            var filteredData = obj2.data.filter(function(item) {
+            let filteredData = obj.data.filter(function(item) {
                 return item !== null;
             });
 
-            var chart = Highcharts.chart('min_salary', {
+            let chart = Highcharts.chart('min_salary', {
                 chart: {
                     type: 'column',
                     backgroundColor: 'rgba(0,0,0,0)'

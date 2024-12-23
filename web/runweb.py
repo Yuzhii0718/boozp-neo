@@ -25,6 +25,7 @@ min_province_num = shower['min_province_num']
 min_salary_num = shower['min_salary_num']
 top_company_num = shower['top_company_num']
 top_field_num = shower['top_field_num']
+heatmap_scale = shower['heatmap_scale']
 
 app = Flask(__name__)
 
@@ -111,7 +112,7 @@ def get_heatmap():
     # 去除结果中 “\r\n” 字符
     results = list(map(lambda x: (x[0], x[1].replace('\r\n', ''), x[2].replace('\r\n', '')), results))
     # 对结果进行处理，count 的值放大10倍
-    results = list(map(lambda x: (x[0] * 100, x[1], x[2]), results))
+    results = list(map(lambda x: (x[0] * heatmap_scale, x[1], x[2]), results))
     # 转换为json
     data = []
     for r in results:

@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('myModal');
-    const modalBody = document.getElementById('modal-body');
-    const span = document.getElementsByClassName('close')[0];
-    const elements = document.getElementsByClassName('fullscreen_able');
+    let modal = document.getElementById('myModal');
+    let modalBody = document.getElementById('modal-body');
+    let span = document.getElementsByClassName('close')[0];
+    let elements = document.getElementsByClassName('fullscreen_able');
 
     Array.from(elements).forEach(element => {
         element.addEventListener('click', function () {

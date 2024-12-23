@@ -5,7 +5,7 @@ $(document).ready(function () {
         datatype: 'json',
         timeout: 5000,//超时时间设置为5秒；
         success: function (data) {
-            var obj = JSON.parse(data);
+            let obj = JSON.parse(data);
             if (obj.status == 201){
                 this.error(xhr=obj)
                 return

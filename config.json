@@ -48,6 +48,8 @@
         "min_province_num": 20,
         "top_company_num": 10,
         "top_field_num": 10,
-        "comment": "The number of min data to display"
+        "comment": "The number of min data to display",
+        "heatmap_scale": 100,
+        "heatmap_scale_comment": "The scale of the heatmap, in order to better display the data"
     }
 }

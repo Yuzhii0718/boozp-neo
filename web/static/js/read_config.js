@@ -4,7 +4,7 @@ $(document).ready(function () {
         type: 'GET',
         datatype: 'json',
         success: function (config) {
-            const obj = JSON.parse(config);
+            let obj = JSON.parse(config);
             if (obj.status == 201) {
                 this.error(xhr = obj);
                 return
@@ -29,7 +29,7 @@ $(document).ready(function () {
     })
 })
 
-const imageCiallo = [
+let imageCiallo = [
 	'	 ██████╗██╗ █████╗ ██╗     ██╗      ██████╗     ██╗    ',
 	'	██╔════╝██║██╔══██╗██║     ██║     ██╔═══██╗    ██║    ',
 	'	██║     ██║███████║██║     ██║     ██║   ██║    ██║    ',
