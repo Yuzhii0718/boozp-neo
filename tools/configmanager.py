@@ -13,6 +13,11 @@ class ConfigManager:
 
     @staticmethod
     def get_config(section):
+        """
+        Get the configuration information in the configuration file
+        :param section:
+        :return:
+        """
         with open(ConfigManager.JSON_PATH, 'r') as file:
             config = json.load(file)
             return config.get(section, {})
